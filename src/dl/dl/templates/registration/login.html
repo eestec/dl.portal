@@ -1,0 +1,36 @@
+{% extends 'distance_learning/base.html' %}
+{% load url from future %}
+
+{% block main_content %}
+<div class="wrapper">
+    <div class="form">
+    <form action='.' method='post'>{% csrf_token %}
+        <div class="field">
+            <div class="label">{{ form.username.label_tag }}</div>
+            <div class="input">{{ form.username }}</div>
+        {% if form.username.errors %}
+            <div class="errors">{{ form.username.errors }}</div>
+        {% endif %}
+        </div>
+        <div class="field">
+            <div class="label">{{ form.password.label_tag }}</div>
+            <div class="input">{{ form.password }}</div>
+        {% if form.password.errors %}
+            <div class="errors">{{ form.password.errors }}</div>
+        {% endif %}
+        </div>
+        <input type="submit" value="Login" />
+    {% if next %}
+        <input type="hidden" name="next" value="{{ next }}" />
+    {% endif %}
+    </form>
+    </div>
+    <div class="clear"></div>
+
+    <div id="social" style="display: inline-block;">
+        <div class="left">Or sign in with</div>
+        <a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}"><div id="google-button" class="left"></div></a>
+        <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}"><div id="facebook-button" class="left"></div></a>
+    </div>
+</div>
+{% endblock %}

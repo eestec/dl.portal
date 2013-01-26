@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% load url from future %}
+
+{% block title %} Admin notifications {% endblock %}
+
+{% block content %}
+{% for notification in notifications %}
+<p>
+<a href="{{ notification.handle_url }}">{{ notification.message }}</a>
+<a href="{% url 'admin-notifications-delete' notification.id %}">Del</a>
+</p>
+{% endfor %}
+{% endblock %}

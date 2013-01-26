@@ -1,0 +1,14 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+
+{% block main_content %}
+{% spaceless %}
+{% for category, cvideos in categorized_videos.iteritems %}
+    <h2>{{ category }}</h2>
+        {% for video in cvideos %}
+            <p><a href="{{ video.get_absolute_url }}">{{ video }}</a> (viewed: {{ video.views }})</p>
+            {{ video.embed_html }}
+        {% endfor %} 
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}

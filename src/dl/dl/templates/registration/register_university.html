@@ -1,0 +1,9 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+
+{% block main_content %}
+<form action="{% url 'register-university' %}" method="POST">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}

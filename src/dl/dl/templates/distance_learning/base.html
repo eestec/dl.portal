@@ -1,0 +1,134 @@
+{% load staticfiles %}
+{% load url from future %}
+{% spaceless %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static "dl/js/jquery.cookie.js" %}"></script>
+        <script type="text/javascript" src="{% static "dl/js/main.js" %}"></script>
+        <script type="text/javascript" src="{% static "dl/js/jquery-ui-1.9.1.custom.min.js" %}"></script>
+        {% block extra-js %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{% static "dl/css/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
+        <link rel="stylesheet" type="text/css" href="{% static "dl/css/base.css" %}" />
+        {% block extra-css %}{% endblock %}
+    </head>
+    <body>
+        <div id="top-bar">
+            <div id="main-nav-bar">
+                <div class="main-nav-bar-item">
+                    <a href="{% url 'dl-index' %}"><img src="{% static "dl/images/logo-small.png" %}" height="85px" alt="Distance Learning Small Logo"></a>
+                </div>
+                <div class="main-nav-bar-sep"></div>
+                <div class="main-nav-bar-item">
+                    <a href="{% url 'dl-video-all' %}"><div id="browse"></div></a>
+                </div>
+        {% if user.userprofile.member.can_upload_video or user.is_superuser %}
+                <div class="main-nav-bar-item">
+                    <a href="{% url 'dl-video-upload' %}"><div id="upload"></div></a>
+                </div>
+        {% endif %}
+                <div class="nav-right-side">
+                    <div class="main-nav-bar-item">
+                        <a href="#"><div class="nav-inner">ABOUT</div></a>
+                    </div>
+                    <div class="main-nav-bar-item">
+                        <a href="#"><div class="nav-inner bold">LIVE!</div></a>
+                    </div>
+		{% if not user.is_authenticated %}
+                    <div class="main-nav-bar-item">
+                        <a href="{% url 'user-login' %}"><div class="nav-inner">LOG IN</div></a>
+                    </div>
+                    <div class="main-nav-bar-item">
+                        <a href="#register"><div id="signup"></div></a>
+                    </div>
+        {% else %}
+                    <div class="main-nav-bar-item">
+                        <a href="{% url 'user-logout' %}"><div class="nav-inner">LOG OUT</div></a>
+                    </div>
+                    <div class="main-nav-bar-item">
+                        <a href="{% url 'dl-profile' %}"><div id="profile"></div></a>
+                    </div>
+        {% endif %}
+                </div>
+            </div>
+        </div>
+    {% block register-box %}
+        <div class="lightbox" id="register">
+            <div id="register-box">
+                <div class="option"><a href="{% url 'register-student' %}"><div id="individual-option"></div></a></div>
+                <div class="option"><a href="{% url 'register-university' %}"><div id="university-option"></div></a></div>
+                <div class="option"><a href="{% url 'register-company' %}"><div id="company-option"></div></a></div>
+                <div class="option" id="social">
+                    <div class="left">Or sign up with</div>
+                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}"><div id="google-button" class="left"></div></a>
+                    <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}"><div id="facebook-button" class="left"></div></a>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block banner %}
+        <div id="banner-small">
+            <div id="search-form-wrapper">
+                <form id="search-form" action="{% url 'dl-video-search' %}" method="get">
+                    <input type="text" id="search-input" name="q" placeholder="Search for your video here...">
+                    <input type="submit" id="search-submit" name="search" value="">
+                </form>
+            </div>
+        </div>
+    {% endblock %}
+
+
+        <div id="content">
+            {% block main_content %}{% endblock %}
+        </div>
+
+
+        <div id="bottom-nav">
+            <div class="bottom-nav-bar-item">
+                <a href="{% url 'dl-index' %}"><img src="{% static "dl/images/logo-small-grey.png" %}" height="85px" alt="Distance Learning Small Logo"></a>
+            </div>
+            <div class="bottom-nav-bar-sep"></div>
+            <div class="bottom-nav-bar-item">
+                <a href="{% url 'dl-video-all' %}"><div id="browse-bottom"></div></a>
+            </div>
+            <div class="bottom-nav-bar-item">
+                <a href="#"><div class="nav-inner">ABOUT</div></a>
+            </div>
+            <div class="bottom-nav-bar-item">
+                <a href="#"><div class="nav-inner bold">CONTACT</div></a>
+            </div>
+            <div class="nav-right-side">
+                <div class="bottom-nav-bar-item">
+                    <div class="nav-inner">
+                        <a href="http://www.eestec.net/" target="_blank"><img src="{% static "dl/images/eestec-logo.png" %}" height="30px" alt="EESTEC Logo"></a>
+                    </div>
+                </div>
+                <div class="bottom-nav-bar-item">
+                    <div class="nav-inner">
+                        <a href="http://www.ustream.tv/" target="_blank"><img src="{% static "dl/images/ustream-logo.png" %}" height="15px" alt="USTREAM Logo" style="margin-top: 7px;"></a>
+                    </div>
+                </div>
+                <div class="bottom-nav-bar-item">
+                    <div class="nav-inner">
+                        <a href="http://www.twitter.com/" target="_blank"><img src="{% static "dl/images/twitter-logo.png" %}" height="30px" alt="Twitter logo"></a>
+                    </div>
+                </div>
+                <div class="bottom-nav-bar-item">
+                    <div class="nav-inner">
+                        <a href="http://www.facebook.com/" target="_blank"><img src="{% static "dl/images/facebook-logo.png" %}" height="30px" alt="Facebook Logo"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="line"></div>
+            <div id="copyright" class="left">&copy;2013 EESTEC Distance Learning. Some rights reserved.</div>
+            <div class="right">
+                <div class="left"><a href="#">terms of service</a></div>
+                <div class="left"><a href="#">contact</a></div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endspaceless %}

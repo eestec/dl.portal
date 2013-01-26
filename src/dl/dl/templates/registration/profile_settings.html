@@ -1,0 +1,52 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+{% load staticfiles %}
+
+{% block extra-js %}
+{% spaceless %}
+<script type="text/html" id="video-template">
+<% _.each(videos, function(video) { %>
+    <div class="video">
+        <div class="video-title"><a href="<%= video.video_url %>"><%= video.name %></a></div>
+        <div class="video-description">Submitted by <span class="submitter"><%= video.user %> </span> (viewed: <%= video.views %> times)</div>
+        <iframe width="420" height="315" src="<%= video.embed_url %>?wmode=transparent" frameborder="0" allowfullscreen></iframe>
+    </div>
+<% }); %>
+</script>
+<script type="text/javascript" src="{% static 'dl/js/jquery.history.js' %}"></script>
+<script type="text/javascript" src="{% static 'dl/js/profile.js' %}"></script>
+<script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+{% endspaceless %}
+{% endblock %}
+
+{% block main_content %}
+{% spaceless %}
+    <div class="sec-nav">
+        <div class="sec-nav-items">
+            <div id="favorites" class="sec-nav-item"><a href="{% url 'profile-get-favorites' 1 %}">FAVORITE VIDEOS</a></div>
+            <div id="watch-later" class="sec-nav-item"><a href="{% url 'profile-get-watch-later' 1 %}">WATCH LATER</a></div>
+    {% if user.userprofile.member.can_upload_video or user.is_superuser %}
+        <div id="uploaded" class="sec-nav-item"><a href="{% url 'profile-get-uploaded' 1 %}">UPLOADED</a></div>
+    {% endif %}
+        <div id="settings" class="sec-nav-item selected"><a href="{% url 'profile-settings' %}">SETTINGS</a></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sec-nav-line"></div>
+    </div>
+    <div class="clear"></div>
+
+<div id="main-content">
+    {% if messages %}
+    <div id="messages">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
+<div class="wrapper">
+{% include "registration/profile_form.html" with submit_view_name="profile-settings" %}
+</div>
+</div>
+{% endspaceless %}
+{% endblock %}
+

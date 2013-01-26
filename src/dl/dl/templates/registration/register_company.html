@@ -1,0 +1,21 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+
+{% block main_content %}
+<div class="wrapper">
+    <div class="form">
+    <form action="{% url 'register-company' %}" method="POST">{% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                <div class="label">{{ field.label_tag }}</div>
+                <div class="input">{{ field }}</div>
+            {% if field.errors %}
+                <div class="errors">{{ field.errors }}</div>
+            {% endif %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Register!" />
+    </form>
+    </div>
+</div>
+{% endblock %}

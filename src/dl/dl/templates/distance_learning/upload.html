@@ -1,0 +1,23 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+
+{% block main_content %}
+<div class="wrapper">
+<div class="form">
+<form id="video-upload-form" enctype="multipart/form-data" action="{% url 'dl-video-upload' %}" method="POST">{% csrf_token %}
+    {% for field in form %}
+    <div class="field">
+        <div class="label">{{ field.label_tag }}</div>
+        <div class="input">{{ field }}</div>
+        <div class="clear"></div>
+        {{ field.help_text }}
+    {% if field.errors %}
+        <div class="errors">{{ field.errors }}</div>
+    {% endif %}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
+</div>
+</div>
+{% endblock %}

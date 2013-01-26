@@ -1,0 +1,12 @@
+{{ object.name }}
+{{ object.city }}
+{{ object.country }}
+{{ object.event }}
+{{ object.description }}
+{{ object.lecturer }}
+{{ object.keywords }}
+{{ object.video_type }}
+{% for subject in object.subject.all %}
+{{ subject }}
+{% endfor %}
+{{ object.user }}

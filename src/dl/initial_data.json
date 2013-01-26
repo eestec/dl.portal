@@ -1,0 +1,37 @@
+[
+    {
+        "fields": {
+            "name": "Students", 
+            "permissions": [
+                47,
+                50
+            ]
+        }, 
+        "model": "auth.group", 
+        "pk": 1
+    }, 
+    {
+        "fields": {
+            "name": "Universities", 
+            "permissions": [
+                43, 
+                47,
+                50
+            ]
+        }, 
+        "model": "auth.group", 
+        "pk": 2
+    }, 
+    {
+        "fields": {
+            "name": "Companies", 
+            "permissions": [
+                43, 
+                47,
+                50
+            ]
+        }, 
+        "model": "auth.group", 
+        "pk": 3
+    }
+]

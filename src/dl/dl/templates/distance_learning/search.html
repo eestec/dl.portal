@@ -1,0 +1,15 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+
+{% block main_content %}
+{% if videos %}
+    {% for video in videos %}
+    {{ video.embed_html }}
+    <p><a href="{{ video.get_absolute_url }}">{{ video }}</a></p>
+    {% endfor %}
+{% endif %}
+<form action="{% url 'dl-video-search' %}" method="GET">
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}

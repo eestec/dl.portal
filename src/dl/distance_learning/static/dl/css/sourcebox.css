@@ -1,0 +1,50 @@
+.sourcebox-loader-cache {
+	display : none;
+	background-image : url(../images/loader.gif);
+}
+
+.sourcebox-loader {
+	width : 24px;
+	height : 24px;
+	background-image : url(../images/loader.gif);
+}
+
+.sourcebox-outer-container {
+	position: fixed;
+	left: 0;
+	right: 0;
+	width: auto;
+	top: 0;
+	bottom: 0;
+	height: auto;
+	z-index: 1000;
+}
+
+.sourcebox-fallback-layer {
+	position: fixed;
+	left: 0;
+	right: 0;
+	width: auto;
+	top: 0;
+	bottom: 0;
+	height: auto;
+	background-color: #ddd;
+	z-index: 1001;
+	opacity : 0.6;
+}
+
+.sourcebox-contents-container {
+	background-color : white;
+	padding : 15px;
+	position: absolute;
+	z-index : 1002;
+	border-radius : 5px;
+	max-height : 80%;
+	max-width : 80%;
+}
+
+.sourcebox-contents {
+	overflow : auto;
+	max-height : 100%!important;
+	max-width : 100%!important;
+}

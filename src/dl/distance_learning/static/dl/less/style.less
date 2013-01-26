@@ -1,0 +1,374 @@
+@import "common.less";
+@import "form-style.less";
+@import "lightbox.less";
+
+.text-font(){
+    @default-font-family: "Century Gothic", Verdana, sans-serif;
+    @default-font-color: @dark-gray;
+    font-family: @default-font-family;
+    font-size: @default-font-size;
+    color: @default-font-color;
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+.left {
+    float: left;
+    margin-right: 7px;
+}
+.right {
+    float: right;
+}
+.clear {
+    clear: both;
+}
+.wrapper {
+    text-align: center;
+}
+.form {
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 10px;
+}
+body {
+    margin: 0 0 0 0;
+    .text-font;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.center {
+    margin: 0px auto;
+}
+
+#top-bar {
+    @first-gradient-color: #ffffff;
+    @second-gradient-color: #b3b3b3;
+    @width: 100%;
+    @height: 85px;
+
+    background-image: linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
+    background-image: -o-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
+    background-image: -moz-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
+    background-image: -webkit-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
+    background-image: -ms-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
+    background-image: -webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, @first-gradient-color),
+        color-stop(1, @second-gradient-color)
+    );
+    
+    width: @width;
+    height: @height;
+
+    #main-nav-bar {
+        // Variable declarations
+        @min-element-spacing: 20px;
+        @color: @eestec-red;
+        @menu-font-size: 18px;
+        // Parent style
+        width: @main-width;
+        height: 100%;
+        color: @color;
+        font-size: @menu-font-size;
+        .center;
+        // Children
+        .nav-right-side {
+            float: right;
+            height: 100%;
+        }
+        .main-nav-bar-item {
+            float: left;
+            height: @height;
+            margin-right: @min-element-spacing;
+            cursor: pointer;
+            // A mixin defining a navigation button element
+            // It is always vertically centered (statically calculated top
+            // margin) and has a hover effect.
+            .nav-button(@element-height,
+                        @element-width,
+                        @img-name,
+                        @hover-img-name) {
+                background: url("@{img-path}/@{img-name}") no-repeat;
+                height: @element-height;
+                width: @element-width;
+                margin-top: (@height - @element-height) / 2;
+                &:hover {
+                    background: url("@{img-path}/@{hover-img-name}") no-repeat;
+                }
+            }
+            .nav-inner {
+                @element-height: 50px - @menu-font-size - 10px;
+                margin-top: (@height - @element-height) / 2;
+                width: auto;
+                height: @element-height;
+            }
+            #browse {
+                .nav-button(50px,
+                            123px,
+                            "browse-button.png",
+                            "browse-button-grey.png");
+            }
+            #upload {
+                .nav-button(50px,
+                            123px,
+                            "upload-button.png",
+                            "upload-button.png");
+            }
+            #signup {
+                .nav-button(79px,
+                            124px,
+                            "sign-up-button.png",
+                            "sign-up-button.png");
+                margin: 0 0 0 0;
+            }
+            #profile {
+                .nav-button(50px,
+                            123px,
+                            "profile-button.png",
+                            "profile-button.png");
+            }
+        }
+        .main-nav-bar-sep {
+            background: url("@{img-path}/menu-bar-line.png") no-repeat;
+            float: left;
+            height: @height;
+            width: 18px;    // The width of the bar-line itself...
+            margin-right: @min-element-spacing;
+        }
+    }
+}
+
+#banner-large {
+    @banner-height: 380px;
+    width: 100%;
+    height: @banner-height;
+    background: url("@{img-path}/banner-large.png") no-repeat center;
+    @logo-height: 158px;
+    @logo-width: 600px;
+    #dl-logo-large {
+        width: @logo-width;
+        height: @logo-height;
+        padding-top: @banner-height / 4;
+        display: block;
+    }
+}
+#banner-small {
+    @banner-height: 74px;
+    height: @banner-height;
+    background: url("@{img-path}/banner-small.png") no-repeat center;
+    width: 100%;
+}
+#search-form-wrapper {
+    @width: 600px;
+    @element-height: 30px;
+    @button-width: 75px;
+    padding-top: 15px;
+    width: @width;
+    padding-left: 10px;
+    .center;
+    #search-input {
+        width: @width - @button-width - 25px;   // Not sure where the magic value comes from...
+        height: @element-height;
+        margin-right: 10px;
+        float: left;
+        font-size: 14px;
+    }
+    #search-submit {
+        width: @button-width - 5px;
+        height: @element-height + 10px;
+        background: url("@{img-path}/search-go-button.png") no-repeat;
+        border-width: 0;
+        float: left;
+    }
+}
+
+// TODO: Small banner
+
+#content {
+    width: @main-width;
+    .center;
+    padding-top: 15px;
+}
+
+#bottom-nav {
+    @height: 85px;
+    .center;
+    width: @main-width;
+    height: @height;
+    margin-top: 10px;
+    // Variable declarations
+    @min-element-spacing: 20px;
+    @color: @eestec-red;
+    @menu-font-size: 18px;
+    // Parent style
+    color: @light-gray;
+    font-size: @menu-font-size;
+    // Children
+    .nav-right-side {
+        float: right;
+    }
+    .bottom-nav-bar-item {
+        float: left;
+        height: @height;
+        margin-right: @min-element-spacing;
+        cursor: pointer;
+        // A mixin defining a navigation button element
+        // It is always vertically centered (statically calculated top
+        // margin) and has a hover effect.
+        .nav-button(@element-height,
+                    @element-width,
+                    @img-name,
+                    @hover-img-name) {
+            background: url("@{img-path}/@{img-name}") no-repeat;
+            height: @element-height;
+            width: @element-width;
+            margin-top: (@height - @element-height) / 2;
+            &:hover {
+                background: url("@{img-path}/@{hover-img-name}") no-repeat;
+            }
+        }
+        .nav-inner {
+            @element-height: 50px - @menu-font-size - 10px;
+            margin-top: (@height - @element-height) / 2;
+            width: auto;
+            height: @element-height;
+        }
+        #browse-bottom {
+            .nav-button(50px,
+                        123px,
+                        "browse-button-grey.png",
+                        "browse-button-grey.png");
+        }
+    }
+    .bottom-nav-bar-sep {
+        background: url("@{img-path}/bottom-line-grey.png") no-repeat;
+        float: left;
+        height: @height;
+        width: 18px;    // The width of the bar-line itself...
+        margin-right: @min-element-spacing;
+    }
+}
+
+#footer {
+    @footer-height: 30px;
+    width: @main-width;
+    height: @footer-height;
+    color: @light-gray;
+    .center;
+    #line {
+        width: 100%;
+        height: 2px;
+        background: @medium-gray;
+        margin-bottom: 5px;
+    }
+    margin-bottom: 7px;
+}
+
+.column {
+    @column-width: @main-width / 2;
+    @filler-width: 20px;
+    width: @column-width;
+    float: left;
+    min-height: 1px;
+    margin-top: 10px;
+    .part {
+        width: (@column-width / 2) - (@filler-width / 2);
+        float: left;
+        min-height: 1px;
+    }
+    .filler {
+        width: @filler-width;
+        float: left;
+        min-height: 1px;
+    }
+}
+
+.radiobutton {
+    @width: 17px;
+    @height: 17px;
+    width: @width;
+    height: @height;
+    margin-top: 5px;
+    margin-right: 7px;
+    cursor: pointer;
+    background: url("@{img-path}/circle-unselected.png") no-repeat;
+    float: left;
+    &.selected, &:hover {
+        background: url("@{img-path}/circle-selected.png") no-repeat;
+    }
+}
+
+.videos-column {
+    @video-width: 420px;
+    .center;
+    width: @video-width;
+}
+
+.video {
+    clear: both;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    .video-title {
+        color: @blue;
+        font-size: @default-font-size + 2;
+    }
+    .video-description {
+        font-style: italic;
+        margin-bottom: 10px;
+        .submitter {
+            font-style: normal;
+            font-weight: bold;
+        }
+    }
+}
+
+.title {
+    @font-size: 18px;
+    font-size: @font-size;
+    text-align: center;
+    color: @medium-gray;
+    &.selected {
+        color: @dark-gray;
+    }
+}
+
+.sec-nav {
+    @font-size: 18px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    .sec-nav-items {
+        .center;
+        width: 570px;
+        .sec-nav-item {
+            font-size: @font-size;
+            margin-right: 20px;
+            color: @medium-gray;
+            float: left;
+            cursor: pointer;
+            &.selected, &:hover {
+                color: @dark-gray;
+            }
+        }
+    }
+    .sec-nav-line {
+        margin-top: 25px;
+        width: 100%;
+        height: 2px;
+        background-color: #969696;
+    }
+}
+
+.pagination {
+    display: table;
+    .center;
+}
+
+@import "register.less";

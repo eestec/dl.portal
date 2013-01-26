@@ -1,0 +1,79 @@
+[
+    {
+        "fields": {
+            "type_name": "Training"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 1
+    }, 
+    {
+        "fields": {
+            "type_name": "Lecture"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 2
+    }, 
+    {
+        "fields": {
+            "type_name": "Tutorial"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 3
+    }, 
+    {
+        "fields": {
+            "type_name": "Lab"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 4
+    }, 
+    {
+        "fields": {
+            "type_name": "Seminar"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 5
+    }, 
+    {
+        "fields": {
+            "type_name": "Conference"
+        }, 
+        "model": "distance_learning.videotype", 
+        "pk": 6
+    }, 
+    {
+        "fields": {
+            "subject_name": "Computer Science"
+        }, 
+        "model": "distance_learning.videosubject", 
+        "pk": 1
+    }, 
+    {
+        "fields": {
+            "subject_name": "Automatics and Electronics"
+        }, 
+        "model": "distance_learning.videosubject", 
+        "pk": 2
+    }, 
+    {
+        "fields": {
+            "subject_name": "Telecommunications"
+        }, 
+        "model": "distance_learning.videosubject", 
+        "pk": 3
+    }, 
+    {
+        "fields": {
+            "subject_name": "Electric Power Engineering"
+        }, 
+        "model": "distance_learning.videosubject", 
+        "pk": 4
+    }, 
+    {
+        "fields": {
+            "subject_name": "Soft Skills"
+        }, 
+        "model": "distance_learning.videosubject", 
+        "pk": 5
+    }
+]

@@ -1,0 +1,51 @@
+{% extends "distance_learning/base.html" %}
+{% load staticfiles %}
+{% load url from future %}
+
+{% block banner %}
+{% spaceless %}
+        <div id="banner-large">
+            <img src="{% static "dl/images/full-logo-banner.png" %}" alt="Distance Learning Logo" id="dl-logo-large" class="center">
+            <div id="search-form-wrapper">
+                <form id="search-form" action="{% url 'dl-video-search' %}" method="get">
+                    <input type="text" id="search-input" name="q" placeholder="Search for your video here...">
+                    <input type="submit" id="search-submit" value="">
+                </form>
+            </div>
+        </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block main_content %}
+{% spaceless %}
+<div class="column">
+    <div class="part">
+        <div class="right title selected">most viewed</div>
+        <div class="clear"></div>
+        <div style="margin-right: -7px" class="right"><div class="radiobutton selected"></div></div>
+    </div>
+    <div class="filler">&nbsp;</div>
+    <div class="part">
+        <div class="left title">recent</div>
+        <div class="clear"></div>
+        <div class="left radiobutton"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="videos-column">
+{% for video in videos %}
+    <div class="video">
+        <div class="video-title"><a href="{{ video.get_absolute_url }}">{{ video.name }}</a></div>
+        <div class="video-description">Submitted by <span class="submitter">{{ video.user }} </span> (viewed: {{ video.views }} times)</div>
+        {{ video.embed_html }}
+    </div>
+{% endfor %}
+    </div>
+</div>
+<div class="column">
+    <div class="title selected" style="width: 100%">upcoming</div>
+</div>
+
+<div class="clear"></div>
+{% endspaceless %}
+{% endblock %}
+

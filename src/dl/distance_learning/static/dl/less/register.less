@@ -1,0 +1,96 @@
+// #social can show up on both registration and login
+@option-height: 70px;
+@option-width: 122px;
+@google-width: 63px;
+@google-height: 63px;
+@facebook-width: 63px;
+@facebook-height: 63px;
+
+#social {
+    div {
+        margin-top: (@option-height - 16) / 2;
+    }
+    // Google + Facebook + margins + text length
+    width: @google-width + @facebook-width + 190px;
+    font-size: 16px;
+    font-style: italic;
+    // Social button mixin
+    .social-button(@button-width, @button-height, @img-url) {
+        width: @button-width;
+        height: @button-height;
+        margin-top: (@option-height - @button-height) / 2;
+        margin-left: 15px;
+        background: url("@{img-path}/@{img-url}") no-repeat;
+        cursor: pointer;
+    }
+    #google-button {
+        .social-button(@google-width, @google-height, "google-button.png");
+    }
+    #facebook-button {
+        .social-button(@facebook-width,
+                       @facebook-height,
+                       "facebook-button.png");
+    }
+}
+
+// The style of the popup box for registration
+#register-box {
+    @box-width: 452px;
+    @box-height: 517px;
+    .center;
+    width: @box-width;
+    height: @box-height;
+    margin-top: 120px;
+    padding-top: 100px;
+    background: url("@{img-path}/sign-up-menu.png") no-repeat;
+    z-index: 5000;
+    .option {
+        .center;
+        height: @option-height;
+        width: @option-width;
+        margin-bottom: 15px;
+        // To make sure any plain-text divs are centered
+        div {
+            margin-top: (@option-height - 16) / 2;
+        }
+        // Mixin for buttons
+        .button(@element-height,
+                @element-width,
+                @img-name,
+                @hover-img-name) {
+            cursor: pointer;
+            background: url("@{img-path}/@{img-name}") no-repeat;
+            height: @element-height;
+            margin-top: (@option-height - @element-height) / 2;
+            width: @element-width;
+            &:hover {
+                background: url("@{img-path}/@{hover-img-name}") no-repeat;
+            }
+        }
+        #individual-option {
+            .button(49px,
+                    122px,
+                    "individual-button.png",
+                    "individual-button.png");
+        }
+        #university-option {
+            .button(49px,
+                    122px,
+                    "university-button.png",
+                    "university-button.png");
+        }
+        #company-option {
+            .button(49px,
+                    122px,
+                    "company-button.png",
+                    "company-button.png");
+        }
+    }
+
+    // A more specific #social so that the .option does not dominate as the
+    // more specific selector and causes the social part to get its width
+    #social {
+        width: @google-width + @facebook-width + 190px;
+    }
+
+}

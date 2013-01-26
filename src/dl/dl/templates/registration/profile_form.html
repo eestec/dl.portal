@@ -1,0 +1,17 @@
+{% load url from future %}
+{% spaceless %}
+    <div class="form">
+    <form id="settings-form" action="{% url submit_view_name %}" method="POST">{% csrf_token %}
+        {% for field in form %}
+            <div class="field">
+                <div class="label">{{ field.label_tag }}</div>
+                <div class="input">{{ field }}</div>
+            {% if field.errors %}
+                <div class="errors">{{ field.errors }}</div>
+            {% endif %}
+            </div>
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
+    </div>
+{% endspaceless %}
