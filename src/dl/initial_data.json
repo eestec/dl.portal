@@ -3,8 +3,8 @@
         "fields": {
             "name": "Students", 
             "permissions": [
-                47,
-                50
+                ["add_comment", "distance_learning", "comment"],
+                ["view_comment", "distance_learning", "comment"]
             ]
         }, 
         "model": "auth.group", 
@@ -14,9 +14,9 @@
         "fields": {
             "name": "Universities", 
             "permissions": [
-                43, 
-                47,
-                50
+                ["add_comment", "distance_learning", "comment"],
+                ["view_comment", "distance_learning", "comment"],
+                ["add_video", "distance_learning", "video"]
             ]
         }, 
         "model": "auth.group", 
@@ -26,9 +26,9 @@
         "fields": {
             "name": "Companies", 
             "permissions": [
-                43, 
-                47,
-                50
+                ["add_comment", "distance_learning", "comment"],
+                ["view_comment", "distance_learning", "comment"],
+                ["add_video", "distance_learning", "video"]
             ]
         }, 
         "model": "auth.group", 
