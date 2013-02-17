@@ -98,7 +98,7 @@ $(function() {
         hwaccel: false, // Whether to use hardware acceleration
         className: 'spinner', // The CSS class to assign to the spinner
         zIndex: 2e9, // The z-index (defaults to 2000000000)
-        top: '20px', // Top position relative to parent in px
+        top: 'auto', // Top position relative to parent in px
         left: '190px' // Left position relative to parent in px
     };
 
@@ -109,7 +109,7 @@ $(function() {
     var video_template = $('#video-template').html();
     function populateVideos(videos, $container) {
         $container.html(_.template(video_template, {videos: videos}))
-                  .fadeIn(fadeSpeed);
+                  .fadeTo(fadeSpeed, 1);
     }
     var fetchUrls = {
         'show-recent': '/api/video/recent/',
@@ -120,18 +120,19 @@ $(function() {
      * and populates the destinationElement given by a jQuery object.
      */
     function loadVideos(url, $destinationElement) {
-        $destinationElement.fadeOut(fadeSpeed, function() {
+        $destinationElement.fadeTo(fadeSpeed, 0, function() {
             var $this = $(this);
-            $this.html('<br><br><br><br><br>')
-                 .spin(spinnerOpts)
-                 .show();
+            var $mySpinner = $("<div id='my-spinner'></div>");
+            $mySpinner.css('margin-top', '40px');
+            $this.before($mySpinner);
+            $mySpinner.spin();
             $.ajax({
                 url: url,
                 success: function(videos) {
                     // Stop the spinner before populating the videos
-                    $this.spin(false).hide();
-                        populateVideos(videos, $this);
-                    }
+                    $mySpinner.remove();
+                    populateVideos(videos, $this);
+                }
             });
         });
     }
