@@ -94,6 +94,12 @@ urlpatterns += patterns('',
     url(r'^api/video/search/autocomplete/$',
         'distance_learning.views.video_autocomplete_search',
         name='dl-video-autocomplete-json'),
+    url(r'^api/video/recent/$',
+        'distance_learning.views.recent_videos',
+        name='dl-video-recent'),
+    url(r'^api/video/most-viewed/$',
+        'distance_learning.views.most_viewed_videos',
+        name='dl-video-most-viewed'),
 )
 
 # contrib.admin patterns

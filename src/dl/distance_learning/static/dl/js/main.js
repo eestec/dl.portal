@@ -46,62 +46,6 @@ $(function() {
         return false;
     });
 
-    /**
-     * Toggles the visibility of the jQuery element passed as the parameter.
-     * It uses the slide up/down effect to do it.
-     * @param $element a jQuery object 
-     * @return boolean indicating the new visibility state of the element.
-     */
-    function toggleVisibility($element) {
-        if ($element.hasClass('visible')) {
-            $element.slideUp();
-            $element.removeClass('visible');
-        } else {
-            $element.slideDown();
-            $element.addClass('visible');
-        }
-        return $element.hasClass('visible');
-    }
-    // Show and hide the login form
-    $('#login').click(function() {
-        var $slidedown = $('#slidedown');
-        var x = $('#login').offset().left - 55;
-        $slidedown.css('left', x);
-        // If this showed the form, focus the username field of the form
-        if (toggleVisibility($slidedown)) {
-            $('#username').focus();
-        }
-    });
-    // Show and hide the user options
-    $('#user').click(function() {
-        var $tools = $('#tools');
-        var x = $('#user').offset().left;
-        $tools.css('left', x)
-              .css('top', '40px');  // TODO: Move this to actual css?
-        toggleVisibility($tools);
-    });
-    // Show and hide the sign up drop down
-    $('#signup').click(function() {
-        var $signup = $('#signup_options');
-        var x = $('#signup').offset().left;
-        $signup.css('left', x)
-              .css('top', '40px');
-        toggleVisibility($signup);
-    });
-    // Show and hide the about menu options
-    $('#about_menu').click(function() {
-        var $about = $('#about');
-        var x = $('#about_menu').offset().left;
-        $about.css('left', x)
-              .css('top', '40px');
-        toggleVisibility($about);
-    });
-    // TODO: Login form field validation
-    // Form submit validation
-    $('#login_form').submit(function(e) {
-        // TODO: Check if all fields are valid before allowing a submit
-        return true;
-    });
     $('#search-input').autocomplete({
         source: function(request, response) {
             // Wraps the usual requests in a custom ajax call which uses "q"
@@ -120,5 +64,90 @@ $(function() {
             $('#search-input').val(ui.item.value);
             $('#search-form').submit();
         }
+    });
+    var fadeSpeed = 1500;
+
+    /**
+     * jQuery plugin to enable easy spinner creation.
+     */
+    $.fn.spin = function(opts) {
+        this.each(function() {
+            var $this = $(this),
+            data = $this.data();
+            if (data.spinner) {
+                data.spinner.stop();
+                delete data.spinner;
+            }
+            if (opts !== false) {
+                data.spinner = new Spinner($.extend({color: $this.css('color')}, opts)).spin(this);
+            }
+        });
+        return this;
+    };
+    var spinnerOpts = {
+        lines: 13, // The number of lines to draw
+        length: 7, // The length of each line
+        width: 4, // The line thickness
+        radius: 10, // The radius of the inner circle
+        corners: 1, // Corner roundness (0..1)
+        rotate: 0, // The rotation offset
+        color: '#000', // #rgb or #rrggbb
+        speed: 1, // Rounds per second
+        trail: 60, // Afterglow percentage
+        shadow: false, // Whether to render a shadow
+        hwaccel: false, // Whether to use hardware acceleration
+        className: 'spinner', // The CSS class to assign to the spinner
+        zIndex: 2e9, // The z-index (defaults to 2000000000)
+        top: '20px', // Top position relative to parent in px
+        left: '190px' // Left position relative to parent in px
+    };
+
+    /**
+     * Populates the jQuery $container element with the videos from the videos
+     * array.
+     */
+    var video_template = $('#video-template').html();
+    function populateVideos(videos, $container) {
+        $container.html(_.template(video_template, {videos: videos}))
+                  .fadeIn(fadeSpeed);
+    }
+    var fetchUrls = {
+        'show-recent': '/api/video/recent/',
+        'show-most-viewed': '/api/video/most-viewed/'
+    };
+    /**
+     * The function loads videos from the endpoint found at the given url
+     * and populates the destinationElement given by a jQuery object.
+     */
+    function loadVideos(url, $destinationElement) {
+        $destinationElement.fadeOut(fadeSpeed, function() {
+            var $this = $(this);
+            $this.html('<br><br><br><br><br>')
+                 .spin(spinnerOpts)
+                 .show();
+            $.ajax({
+                url: url,
+                success: function(videos) {
+                    // Stop the spinner before populating the videos
+                    $this.spin(false).hide();
+                        populateVideos(videos, $this);
+                    }
+            });
+        });
+    }
+    // Set up the callbacks for switching between the two video types.
+    $('.show-recent').click(function() {
+        var $this = $(this);
+        $('.show-most-viewed').removeClass('selected');
+        $('.show-recent').addClass('selected');
+        var url = fetchUrls['show-recent'];
+        loadVideos(url, $('.videos-column', $this.parents('.column')));
+    });
+    $('.show-most-viewed').click(function() {
+        var $this = $(this);
+        $('.show-most-viewed').addClass('selected');
+        $('.show-recent').removeClass('selected');
+        var url = fetchUrls['show-most-viewed'];
+        loadVideos(url, $('.videos-column', $this.parents('.column')));
     });
 });

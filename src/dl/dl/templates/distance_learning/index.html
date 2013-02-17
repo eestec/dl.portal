@@ -2,6 +2,12 @@
 {% load staticfiles %}
 {% load url from future %}
 
+{% block extra-js %}
+        <script type="text/javascript" src="{% static "dl/js/spin.min.js" %}"></script>
+    {% include "distance_learning/video-template.html" %}
+    <script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+{% endblock %}
+
 {% block banner %}
 {% spaceless %}
         <div id="banner-large">
@@ -20,15 +26,15 @@
 {% spaceless %}
 <div class="column">
     <div class="part">
-        <div class="right title selected">most viewed</div>
+        <div class="right title selected show-most-viewed">most viewed</div>
         <div class="clear"></div>
-        <div style="margin-right: -7px" class="right"><div class="radiobutton selected"></div></div>
+        <div style="margin-right: -7px" class="right"><div class="radiobutton selected show-most-viewed"></div></div>
     </div>
     <div class="filler">&nbsp;</div>
     <div class="part">
-        <div class="left title">recent</div>
+        <div class="left title show-recent">recent</div>
         <div class="clear"></div>
-        <div class="left radiobutton"></div>
+        <div class="left radiobutton show-recent"></div>
     </div>
     <div class="clear"></div>
     <div class="videos-column">

@@ -180,15 +180,7 @@ def _video_to_dict(video):
     """
     Returns a dictionary representation of a Video object.
     """
-    # This method has quite some feature envy and should probably be
-    # refactored into a method of the video class.
-    return {
-        'name': video.name,
-        'video_url': video.get_absolute_url(),
-        'embed_url': video.embed_url(),
-        'user': unicode(video.user),
-        'views': video.views,
-    }
+    return video.to_dict()
 
 
 def _build_response(page):

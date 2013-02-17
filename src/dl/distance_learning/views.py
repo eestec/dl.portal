@@ -234,3 +234,23 @@ def all_videos(request):
         {'videos': Video.objects.filter(approved=True),
          'categorized_videos': categorized_videos},
         context_instance=RequestContext(request))
+
+
+def most_viewed_videos(request):
+    """
+    A view returning a JSON encoded list of the most viewed videos.
+    """
+    return HttpResponse(
+        simplejson.dumps(
+            [video.to_dict() for video in Video.objects.get_most_viewed()]),
+        content_type='application/json')
+
+
+def recent_videos(request):
+    """
+    A view returning a JSON encoded list of the most recent videos.
+    """
+    return HttpResponse(
+        simplejson.dumps(
+            [video.to_dict() for video in Video.objects.get_recent()]),
+        content_type='application/json')

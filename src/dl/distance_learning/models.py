@@ -55,6 +55,12 @@ class VideoManager(models.Manager):
         videos = self.all_approved()
         return sorted(videos, key=lambda v: v.views, reverse=True)[:limit]
 
+    def get_recent(self, limit=5):
+        """
+        Returns the most recent videos.
+        """
+        return self.all_approved().order_by('-date_uploaded')[:limit]
+
 
 def validate_video_url(value):
     """
@@ -202,6 +208,15 @@ class Video(models.Model):
             'params': '?wmode=transparent',      # Solved the overlap issue
         }
         return mark_safe(YOUTUBE_VIDEO_EMBED_HTML_PATTERN % data)
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'video_url': self.get_absolute_url(),
+            'embed_url': self.embed_url(),
+            'user': unicode(self.user),
+            'views': self.views,
+        }
 
     class Meta:
         permissions = (
