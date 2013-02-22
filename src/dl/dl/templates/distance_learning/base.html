@@ -4,13 +4,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
         <script type="text/javascript" src="{% static "dl/js/jquery.cookie.js" %}"></script>
         <script type="text/javascript" src="{% static "dl/js/main.js" %}"></script>
         <script type="text/javascript" src="{% static "dl/js/jquery-ui-1.9.1.custom.min.js" %}"></script>
         {% block extra-js %}{% endblock %}
-        <link rel="stylesheet" type="text/css" href="{% static "dl/css/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}" />
-        <link rel="stylesheet" type="text/css" href="{% static "dl/css/base.css" %}" />
+        <link rel="stylesheet" type="text/css" href="{% static "dl/css/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "dl/css/base.css" %}">
         {% block extra-css %}{% endblock %}
         <title>{% block tab-title %}EESTEC Distance Learning Portal{% endblock %}</title>
     </head>
@@ -18,7 +19,7 @@
         <div id="top-bar">
             <div id="main-nav-bar">
                 <div class="main-nav-bar-item">
-                    <a href="{% url 'dl-index' %}"><img src="{% static "dl/images/logo-small.png" %}" height="85px" alt="Distance Learning Small Logo"></a>
+                    <a href="{% url 'dl-index' %}"><img src="{% static "dl/images/logo-small.png" %}" id="logo" alt="Distance Learning Small Logo"></a>
                 </div>
                 <div class="main-nav-bar-sep"></div>
                 <div class="main-nav-bar-item">
@@ -87,7 +88,7 @@
 
         <div id="bottom-nav">
             <div class="bottom-nav-bar-item">
-                <a href="{% url 'dl-index' %}"><img src="{% static "dl/images/logo-small-grey.png" %}" height="85px" alt="Distance Learning Small Logo"></a>
+                <a href="{% url 'dl-index' %}"><div id="bottom-logo"></div></a>
             </div>
             <div class="bottom-nav-bar-sep"></div>
             <div class="bottom-nav-bar-item">
@@ -102,22 +103,30 @@
             <div class="nav-right-side">
                 <div class="bottom-nav-bar-item">
                     <div class="nav-inner">
-                        <a href="http://www.eestec.net/" target="_blank"><img src="{% static "dl/images/eestec-logo.png" %}" height="30px" alt="EESTEC Logo"></a>
+                        <a href="http://www.eestec.net/" target="_blank">
+                            <div id="eestec-logo"></div>
+                        </a>
                     </div>
                 </div>
                 <div class="bottom-nav-bar-item">
                     <div class="nav-inner">
-                        <a href="http://www.ustream.tv/" target="_blank"><img src="{% static "dl/images/ustream-logo.png" %}" height="15px" alt="USTREAM Logo" style="margin-top: 7px;"></a>
+                        <a href="http://www.ustream.tv/" target="_blank">
+                            <div id="ustream-logo"></div>
+                        </a>
                     </div>
                 </div>
                 <div class="bottom-nav-bar-item">
                     <div class="nav-inner">
-                        <a href="http://www.twitter.com/" target="_blank"><img src="{% static "dl/images/twitter-logo.png" %}" height="30px" alt="Twitter logo"></a>
+                        <a href="http://www.twitter.com/" target="_blank">
+                            <div id="twitter-logo"></div>
+                        </a>
                     </div>
                 </div>
                 <div class="bottom-nav-bar-item">
                     <div class="nav-inner">
-                        <a href="http://www.facebook.com/" target="_blank"><img src="{% static "dl/images/facebook-logo.png" %}" height="30px" alt="Facebook Logo"></a>
+                        <a href="http://www.facebook.com/" target="_blank">
+                            <div id="facebook-logo"></div>
+                        </a>
                     </div>
                 </div>
             </div>

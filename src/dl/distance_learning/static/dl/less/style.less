@@ -50,6 +50,7 @@ a {
     @second-gradient-color: #b3b3b3;
     @width: 100%;
     @height: 85px;
+    border-bottom: solid 2px @eestec-red;
 
     background-image: linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
     background-image: -o-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
@@ -75,9 +76,9 @@ a {
         // Parent style
         width: @main-width;
         height: 100%;
+        .center;
         color: @color;
         font-size: @menu-font-size;
-        .center;
         // Children
         .nav-right-side {
             float: right;
@@ -109,11 +110,21 @@ a {
                 width: auto;
                 height: @element-height;
             }
+            .nav-inner:hover {
+                color: darken(@color, 10%);
+            }
+            img#logo {
+                @logo-small-height: 66px;
+                @logo-small-width: 101px;
+                margin-top: (@height - @logo-small-height) / 2;
+                height: @logo-small-height;
+                width: @logo-small-width;
+            }
             #browse {
-                .nav-button(50px,
-                            123px,
+                .nav-button(48px,
+                            118px,
                             "browse-button.png",
-                            "browse-button-grey.png");
+                            "browse-button-hover.png");
             }
             #upload {
                 .nav-button(50px,
@@ -122,36 +133,38 @@ a {
                             "upload-button.png");
             }
             #signup {
-                .nav-button(79px,
-                            124px,
+                .nav-button(70px,
+                            117px,
                             "sign-up-button.png",
-                            "sign-up-button.png");
+                            "sign-up-hover.png");
                 margin: 0 0 0 0;
             }
             #profile {
-                .nav-button(50px,
-                            123px,
+                .nav-button(47px,
+                            118px,
                             "profile-button.png",
-                            "profile-button.png");
+                            "profile-button-hover.png");
             }
         }
         .main-nav-bar-sep {
             background: url("@{img-path}/menu-bar-line.png") no-repeat;
+            background-position: center;
             float: left;
             height: @height;
-            width: 18px;    // The width of the bar-line itself...
+            width: 14px;    // The width of the bar-line itself...
             margin-right: @min-element-spacing;
         }
     }
 }
 
 #banner-large {
-    @banner-height: 380px;
+    @banner-height: 465px;
     width: 100%;
     height: @banner-height;
     background: url("@{img-path}/banner-large.png") no-repeat center;
-    @logo-height: 158px;
-    @logo-width: 600px;
+    @logo-height: 192px;
+    @logo-width: 731px;
+    border-bottom: solid 2px @eestec-red;
     #dl-logo-large {
         width: @logo-width;
         height: @logo-height;
@@ -160,36 +173,50 @@ a {
     }
 }
 #banner-small {
-    @banner-height: 74px;
+    @banner-height: 90px;
     height: @banner-height;
     background: url("@{img-path}/banner-small.png") no-repeat center;
+    border-bottom: solid 2px @eestec-red;
     width: 100%;
 }
 #search-form-wrapper {
-    @width: 600px;
-    @element-height: 30px;
-    @button-width: 75px;
+    @width: 731px;
+    @element-height: 40px;
+    @button-width: 89px;
+    @button-height: 64px;
     padding-top: 15px;
     width: @width;
     padding-left: 10px;
     .center;
     #search-input {
-        width: @width - @button-width - 25px;   // Not sure where the magic value comes from...
+        width: @width - @button-width - 33px;   // Padding + margin-left
         height: @element-height;
         margin-right: 10px;
+        margin-top: 4px;
         float: left;
-        font-size: 14px;
+        font-size: 16px;
+    }
+    #search-input::-webkit-input-placeholder {
+        font-style: italic;
+    }
+    #search-input::-moz-input-placeholder {
+        font-style: italic;
+    }
+    #search-input::-ms-input-placeholder {
+        font-style: italic;
     }
     #search-submit {
-        width: @button-width - 5px;
-        height: @element-height + 10px;
+        width: @button-width;
+        height: @button-height;
         background: url("@{img-path}/search-go-button.png") no-repeat;
         border-width: 0;
         float: left;
     }
+    #search-submit:hover {
+        background: url("@{img-path}/search-go-hover.png") no-repeat;
+        cursor: pointer;
+    }
 }
-
-// TODO: Small banner
 
 #content {
     width: @main-width;
@@ -239,16 +266,53 @@ a {
             margin-top: (@height - @element-height) / 2;
             width: auto;
             height: @element-height;
+            #eestec-logo {
+                @eestec-logo-width: 70px;
+                @eestec-logo-height: 30px;
+                .nav-button(@eestec-logo-height,
+                            @eestec-logo-width,
+                            "eestec-logo.png",
+                            "eestec-logo-hover.png");
+            }
+            #ustream-logo {
+                .nav-button(15px,
+                            80px,
+                            "ustream-logo.png",
+                            "ustream-logo-hover.png");
+                margin-top: 40px;
+            }
+            #twitter-logo {
+                .nav-button(30px,
+                            43px,
+                            "twitter-logo.png",
+                            "twitter-logo-hover.png");
+            }
+            #facebook-logo {
+                .nav-button(30px,
+                            17px,
+                            "facebook-logo.png",
+                            "facebook-logo-hover.png");
+            }
+        }
+        .nav-inner:hover {
+            color: darken(@light-gray, 10%);
+        }
+        #bottom-logo {
+            .nav-button(65px,
+                        101px,
+                        "logo-small-gray.png",
+                        "logo-small.png");
         }
         #browse-bottom {
-            .nav-button(50px,
-                        123px,
-                        "browse-button-grey.png",
-                        "browse-button-grey.png");
+            .nav-button(48px,
+                        118px,
+                        "browse-button-hover.png",
+                        "browse-button.png");
         }
     }
     .bottom-nav-bar-sep {
-        background: url("@{img-path}/bottom-line-grey.png") no-repeat;
+        background: url("@{img-path}/bottom-line.png") no-repeat;
+        background-position: center;
         float: left;
         height: @height;
         width: 18px;    // The width of the bar-line itself...
@@ -261,6 +325,9 @@ a {
     width: @main-width;
     height: @footer-height;
     color: @light-gray;
+    a:hover {
+        color: darken(@light-gray, 10%);
+    }
     .center;
     #line {
         width: 100%;
@@ -318,6 +385,9 @@ a {
     .video-title {
         color: @blue;
         font-size: @default-font-size + 2;
+        a:hover {
+            color: darken(@blue, 10%);
+        }
     }
     .video-description {
         font-style: italic;
