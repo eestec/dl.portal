@@ -1,0 +1,7 @@
+{% spaceless %}
+    <div class="video">
+        <div class="video-title"><a href="{{ video.get_absolute_url }}">{{ video.name }}</a></div>
+        <div class="video-description">Submitted by <span class="submitter">{{ video.user.userprofile.member.cast }} </span> (viewed: {{ video.views }} times)</div>
+        {{ video.embed_html }}
+    </div>
+{% endspaceless %}

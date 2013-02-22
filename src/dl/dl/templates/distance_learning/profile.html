@@ -45,11 +45,7 @@
 {% if videos %}
     <div class="videos-column">
     {% for video in videos.object_list|slice:":3" %}
-        <div class="video">
-            <div class="video-title"><a href="{{ video.get_absolute_url }}">{{ video.name }}</a></div>
-            <div class="video-description">Submitted by <span class="submitter">{{ video.user }} </span> (viewed: {{ video.views }} times)</div>
-            {{ video.embed_html }}
-        </div>
+        {% include "distance_learning/video-thumbnail.html" %}
     {% endfor %}
     </div>
 {% else %}

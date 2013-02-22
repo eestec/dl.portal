@@ -214,7 +214,7 @@ class Video(models.Model):
             'name': self.name,
             'video_url': self.get_absolute_url(),
             'embed_url': self.embed_url(),
-            'user': unicode(self.user),
+            'user': unicode(self.user.userprofile.member.cast()),
             'views': self.views,
         }
 

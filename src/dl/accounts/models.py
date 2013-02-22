@@ -260,7 +260,7 @@ class Student(Member):
         super(Student, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
-        return u'%s %s' % (self.surname, self.name)
+        return u'%s %s' % (self.name, self.surname)
 
 
 class Company(Member):
