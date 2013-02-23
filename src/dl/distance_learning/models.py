@@ -46,6 +46,12 @@ class VideoManager(models.Manager):
         """
         return super(VideoManager, self).get_query_set().filter(approved=True)
 
+    def all_active_broadcast(self):
+        """
+        Returns a QuerySet of Videos which are flaged as an active broadcast.
+        """
+        return self.all_approved().filter(active_broadcast=True)
+
     def get_most_viewed(self, limit=5):
         """
         Returns videos sorted by the number of its hits.
@@ -109,6 +115,7 @@ class Video(models.Model):
     description = models.TextField()
     video_url = models.URLField(verbose_name="Video URL",
                                 validators=[validate_video_url, ])
+    live_broadcast = models.BooleanField(default=False)
     lecturer = models.CharField(max_length=60)
     # TODO: Refactor the max_upload_sizes to some settings file constant
     handout = LimitedFileField(
@@ -127,6 +134,7 @@ class Video(models.Model):
     keywords = CommaDelimitedTextField(max_length=150)
     subject = models.ManyToManyField(VideoSubject)
     user = models.ForeignKey(User, editable=False)
+    active_broadcast = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
 
     _views = None

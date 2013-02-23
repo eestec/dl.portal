@@ -9,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from django.utils import simplejson
 from django.shortcuts import render_to_response
+from django.shortcuts import render
+from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 
 from django.core.urlresolvers import reverse
@@ -137,6 +139,22 @@ def search(request, **kwargs):
         'distance_learning/search.html',
         {'form': form},
         context_instance=RequestContext(request))
+
+
+def live_broadcast(request):
+    """
+    A view which renders the live broadcast page.
+    """
+    videos = Video.objects.all_active_broadcast()
+    if videos:
+        # For now, we'll allow only one live broadcast to be shown at a time
+        video = videos[0]
+    else:
+        # No videos are flaged as an active live broadcast event
+        return render(request, 'distance_learning/live.html', {
+            'videos': None,
+        })
+    return redirect(video)
 
 
 @permission_required('distance_learning.add_comment', raise_exception=True)

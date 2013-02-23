@@ -35,7 +35,7 @@
                         <a href="#"><div class="nav-inner">ABOUT</div></a>
                     </div>
                     <div class="main-nav-bar-item">
-                        <a href="#"><div class="nav-inner bold">LIVE!</div></a>
+                        <a href="{% url 'dl-live' %}"><div class="nav-inner bold">LIVE!</div></a>
                     </div>
 		{% if not user.is_authenticated %}
                     <div class="main-nav-bar-item">

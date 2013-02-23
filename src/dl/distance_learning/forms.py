@@ -11,10 +11,12 @@ from distance_learning.models import Comment
 class VideoUploadForm(ModelForm):
     class Meta:
         model = Video
-        # The approved flag is excluded from the form shown to the user.
-        # It defaults to False and only the admin can change it to True
+        # The approved and active_broadcast flags are excluded from the form
+        # shown to the user.
+        # They default to False and only the admin can change them to True
         exclude = (
             'approved',
+            'active_broadcast',
         )
 
 
@@ -46,6 +48,7 @@ class VideoSearchForm(forms.Form):
     # search results
     exclude_fields = (
         'approved',
+        'active_broadcast',
         'video_url',
         'description',
         'handout',
