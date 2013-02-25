@@ -64,9 +64,6 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'zg31i6mpwciha02wtmg&amp;l(w!ukxky#2juwiqmpfgek7l%rz=-i'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -181,6 +178,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# django-social-auth settings
 # Functions added to the pipeline
 SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.social.social_auth_user',
@@ -192,6 +190,11 @@ SOCIAL_AUTH_PIPELINE = (
     'accounts.pipeline.create_member',
     'accounts.pipeline.user_set_active',
 )
+
+SOCIAL_AUTH_UID_LENGTH = 222
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 200
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 135
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 
 FACEBOOK_EXTENDED_PERMISSIONS = ['email',]
 
