@@ -1,0 +1,10 @@
+<div class="fade" id="social-buttons">
+    <div class="fb-like" data-send="false" data-layout="box_count" data-width="55" data-show-faces="false"></div>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-count="vertical">Tweet</a>
+    <div class="g-plusone-frame"><div class="g-plusone" data-size="tall"></div></div>
+    <div id="fb-root"></div>
+</div>
+{% comment %}
+This contains the minified scripts to initialize the social buttons for Facebook, Twitter and Google and a timeouted closure which shows the buttons after 5 seconds. This is so that they all show up on the page in the same time once they're all loaded.
+{% endcomment %}
+<script>(function(e,a,f){var c,b=e.getElementsByTagName(a)[0];if(e.getElementById(f)){return}c=e.createElement(a);c.id=f;c.src="//connect.facebook.net/en_US/all.js#xfbml=1&appId=337556633015583";b.parentNode.insertBefore(c,b)}(document,"script","facebook-jssdk"));(function(){var a=document.createElement("script");a.type="text/javascript";a.async=true;a.src="https://apis.google.com/js/plusone.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)})();!function(e,a,f){var c,b=e.getElementsByTagName(a)[0];if(!e.getElementById(f)){c=e.createElement(a);c.id=f;c.src="https://platform.twitter.com/widgets.js";b.parentNode.insertBefore(c,b)}}(document,"script","twitter-wjs");setTimeout(function(){$("#social-buttons").removeClass("fade")},5000);</script>
