@@ -32,6 +32,12 @@ $(function() {
 
     $('#add-favorite, #add-watch-later').click(function() {
         var $this = $(this);
+        var type = '';
+        if ($this[0].id == 'add-favorite') {
+            type = 'favorites';
+        } else if ($this[0].id == 'add-watch-later') {
+            type = 'watch later';
+        }
         var url = $this.attr('href');
         $.ajax({
             type: 'POST',
@@ -40,7 +46,10 @@ $(function() {
                 'video_id': $('#video-id').html()
             },
             success: function(data) {
-                alert(data);
+                if (data.status === 'ok') {
+                    var $parent = $this.parent();
+                    $parent.html('Added to ' + type);
+                }
             }
         });
         return false;

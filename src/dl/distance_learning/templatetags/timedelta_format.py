@@ -16,6 +16,8 @@ def timedelta_format(value):
         elif minutes > 0:
             return '{0} minute{1}'.format(minutes, 's' if minutes > 1 else '')
         else:
-            return '{0} second{1}'.format(total, 's' if total > 1 or total == 0 else '')
+            return '{0} second{1}'.format(total,
+                                          ('s' if total > 1 or total == 0 else
+                                           ''))
     except:
         return ''

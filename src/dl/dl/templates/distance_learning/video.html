@@ -27,6 +27,7 @@
         <div id="video-title">{{ video.name }}</div>
         <div id="video-social">{% include "distance_learning/social-buttons.html" %}</div>
         <div id="video-basic-info">
+            <div id="video-id">{{ video.pk }}</div>
             <span>from </span><span class="video-submitter">{{ video.user.userprofile.member.cast }}</span>
             <span> ({{ video.video_age|timedelta_format }} ago)
         </div>
@@ -37,8 +38,8 @@
     <div id="video-info">
         <div id="video-info-top-wrapper">
             <div class="video-buttons">
-                <span><a href="{% url 'profile-add-favorite' %}">add to favorites</a></span>
-                <span><a href="{% url 'profile-add-watch-later' %}">watch later</a></span>
+                <span><a id="add-favorite" href="{% url 'profile-add-favorite' %}">add to favorites</a></span>
+                <span><a id="add-watch-later" href="{% url 'profile-add-watch-later' %}">watch later</a></span>
             </div>
             <div id="keywords">
                 <span>tags: </span>

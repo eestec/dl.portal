@@ -308,7 +308,7 @@ class University(Member):
         super(University, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
-        return u'%s %s' % (name_of_faculty, name_of_university)
+        return u'%s, %s' % (self.name_of_university, self.name_of_faculty)
 
     class Meta:
         verbose_name_plural = "universities"
