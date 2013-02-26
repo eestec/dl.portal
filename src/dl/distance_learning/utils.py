@@ -154,3 +154,11 @@ def get_or_none(model, **kwargs):
     except model.DoesNotExist:
         return None
 
+def add_url_to_context(request):
+    """
+    Context processor which adds the full path to the current page to the
+    context.
+    """
+    return {
+        'full_path': request.build_absolute_uri(request.get_full_path())
+    }

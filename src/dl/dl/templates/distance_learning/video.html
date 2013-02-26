@@ -1,6 +1,7 @@
 {% extends "distance_learning/base.html" %}
 {% load url from future %}
 {% load hitcount_tags %}
+{% load timedelta_format %}
 
 {% block extra-js %}
 <script src="/media/js/jquery-latest.js" type="text/javascript"></script>
@@ -11,61 +12,101 @@
 --></script>
 {% endblock %}
 
+{% block extra-head %}
+<link rel="canonical" href="{{ full_path }}">
+{% comment %} Some Facebook OG meta tags {% endcomment %}
+<meta property="og:url" content="{{ full_path }}">
+<meta property="og:site_name" content="EESTEC Distance Learning Portal">
+<meta property="og:title" content="EESTEC DL Video {{ video.pk }}">
+{% endblock %}
+
 {% block main_content %}
-{% include "distance_learning/social-buttons.html" %}
-<div class="clear"></div>
 {% spaceless %}
-    <h1>{{ video.name }}</h1>
-    <!-- embed YouTube video, just link for now -->
-    {{ video.embed_html }}
-    <p><a href="{{ video.video_url }}">Vid</a></p>
-    <p>{{ video.user.name }}</p>
-    <p>{{ video.date_uploaded }}</p>
-    <p>{{ video.description }}</p>
-    <p>{{ video.city }}</p>
-    <p>{{ video.country }}</p>
-    <p>{{ video.event }}</p>
-    <p>{{ video.lecturer }}</p>
-    {% if video.handout %}
-    <p><a href="{{ video.handout.url }}">Handout</a></p>
-    {% endif %}
-    {% if video.presentation %}
-    <p><a href="{{ video.presentation.url }}">Presentation</a></p>
-    {% endif %}
-    <p>{{ video.video_type.type_name }}</p>
-    <p>
-    {% for keyword in video.keywords %}
-        {{ keyword }}
-    {% endfor %}
-    </p>
-    <p>
+<div class="video-large">
+    <div id="video-title-bar">
+        <div id="video-title">{{ video.name }}</div>
+        <div id="video-social">{% include "distance_learning/social-buttons.html" %}</div>
+        <div id="video-basic-info">
+            <span>from </span><span class="video-submitter">{{ video.user.userprofile.member.cast }}</span>
+            <span> ({{ video.video_age|timedelta_format }} ago)
+        </div>
+    </div>
+    <div id="video-embed-wrapper">
+        <iframe width="600" height="450" src="{{ video.embed_url }}?wmode=transparent" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div id="video-info">
+        <div id="video-info-top-wrapper">
+            <div class="video-buttons">
+                <span><a href="{% url 'profile-add-favorite' %}">add to favorites</a></span>
+                <span><a href="{% url 'profile-add-watch-later' %}">watch later</a></span>
+            </div>
+            <div id="keywords">
+                <span>tags: </span>
+                {% for keyword in video.keywords %}
+                    <span class="keyword">{% if not forloop.counter0 == 0 %}, {% endif %}{{ keyword }}</span>
+                {% endfor %}
+            </div>
+            <div class="video-buttons">
+                {% if video.presentation %}
+                    <span><a href="{{ video.presentation.url }}">presentation</a></span>
+                {% endif %}
+                {% if video.handout %}
+                    <span><a href="{{ video.handout.url }}">handout</a></span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div id="video-description-wrapper">
+            <div id="video-description-title">DESCRIPTION</div>
+            <div id="video-description">{{ video.description }}</div>
+        </div>
+    </div>
+</div>
+{% comment %}
+TODO: Async, paginated comment fetching
+{% endcomment %}
+<div class="comments">
+    <div class="comment-top-wrapper">
+        {% with video.comment_set.count as comment_count %}
+        {{ comment_count }} Comment{% if not comment_count == 1 %}s{% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="comments-list">
+        {% for comment in video.comment_set.all %}
+        <div class="comment-wrapper">
+            <div class="comment">
+                <div class="submitter">
+                    <span class="submitter-name">{{ comment.user.userprofile.member.cast }}</span>
+                    <span class="time-submitted"> ({{ comment.comment_age|timedelta_format }} ago)</span>
+                </div>
+                <div class="comment-text">
+                    <span>{{ comment.text }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="comment-form-wrapper">
+        {% if comment_form %}
+            <form method="POST" name="comment-form" id="comment-form" action="{% url 'dl-post-comment' video.id %}">{% csrf_token %}
+                <div class="comment-text-wrapper">{{ comment_form.text }}</div>
+                <div class="comment-form-submit-wrapper"><button type="submit">Add a new comment</button></div>
+            </form>
+        {% else %}
+            <div>Log in to comment.</div>
+        {% endif %}
+    </div>
+
+</div>
+{% comment %}
+Maybe use these as tags?
     {% for subject in video.subject.all %}
             {{ subject }}
     {% endfor %}
-    </p>
-    <p></p>
+Add this somewhere -- it's a cool metric.
     <p>Views: {% get_hit_count for video %}</p>
-
-    {% comment %}
-    TODO: Async, paginated comment fetching
-    {% endcomment %}
-    <h2>Comments</h2>
-    {% if comment_form %}
-    <div id="video-id" style="display: none">{{ video.id }}</div>
-    <a href="{% url 'profile-add-favorite' %}" id="add-favorite">Add favorite</a>
-    <a href="{% url 'profile-add-watch-later' %}" id="add-watch-later">Watch later</a>
-    <form method="POST" action="{% url 'dl-post-comment' video.id %}">{% csrf_token %}
-        {{ comment_form.as_p }}
-        <input type="submit" value="Submit">
-    </form>
-    {% else %}
-    <div>Log in to comment.</div>
-    {% endif %}
-    {% for comment in video.comment_set.all %}
-    <p>
-        {{ comment.user }}
-        {{ comment.text }}
-    </p>
-    {% endfor %}
+{% endcomment %}
 {% endspaceless %}
 {% endblock %}

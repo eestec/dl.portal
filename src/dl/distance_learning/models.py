@@ -1,10 +1,12 @@
 import urlparse
+from collections import namedtuple
 
 from django.db import models
 from django.dispatch import receiver
 from django.core import urlresolvers
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.db.models.signals import post_save
 
@@ -107,7 +109,7 @@ class Video(models.Model):
     objects = VideoManager()
 
     name = models.CharField(max_length=100, verbose_name="Video name")
-    date_uploaded = models.DateField(auto_now_add=True)
+    date_uploaded = models.DateTimeField(auto_now_add=True)
     # Date when the video was taken?
     city = models.CharField(max_length=60)
     country = models.CharField(max_length=55)
@@ -226,6 +228,14 @@ class Video(models.Model):
             'views': self.views,
         }
 
+    def video_age(self):
+        """
+        Returns a `timedelta` object representing the age of the video
+        which is the difference between current time and the time when the
+        video was submitted.
+        """
+        return timezone.now() - self.date_uploaded
+
     class Meta:
         permissions = (
             ('view_video', 'Can view videos'),
@@ -239,13 +249,20 @@ class Comment(models.Model):
     video = models.ForeignKey(Video)
     user = models.ForeignKey(User)
     text = models.TextField()
-    date_posted = models.DateField(auto_now_add=True)
+    date_posted = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return u'%s, %s' % (unicode(self.video), unicode(self.user))
 
     def __str__(self):
         return '%s, %s' % (str(self.video), str(self.user))
+
+    def comment_age(self):
+        """
+        Returns a `timedelta` object representing the age of the Comment.
+        (The difference between the current time and the time submitted.)
+        """
+        return timezone.now() - self.date_posted
 
     class Meta:
         permissions = (

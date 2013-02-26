@@ -1,6 +1,10 @@
 {% extends 'distance_learning/base.html' %}
 {% load url from future %}
 
+{% block extra-js %}
+<script>$(function(){$('form #id_username').focus();});</script>
+{% endblock %}
+
 {% block main_content %}
 <div class="wrapper">
     <div class="form">
