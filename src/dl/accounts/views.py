@@ -32,6 +32,7 @@ from distance_learning.models import Video
 
 from emailconfirmation.models import EmailAddress
 
+from accounts.models import Student, University, Company
 from accounts.forms import get_form_for_model
 from accounts.utils import redirect_if_logged_in, get_or_none
 from accounts.utils import render_to_json_response

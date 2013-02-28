@@ -216,6 +216,14 @@ class Member(models.Model):
         """
         self.active = False
 
+    def confirm_email(self):
+        """
+        A method which should be called once the member has confirmed the
+        email
+        """
+        # The base class' implementation does nothing
+        pass
+
     def cast(self):
         """
         The method casts the Member object to the subclass object for which
@@ -267,6 +275,14 @@ class Student(Member):
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.surname)
+
+    def confirm_email(self):
+        """
+        Overrides the base confirm_email method to activate the Individual's
+        account.
+        """
+        self.active = True
+        self.save()
 
 
 class Company(Member):
@@ -395,6 +411,4 @@ def handle_email_confirmed(sender, **kwargs):
     active user.
     """
     email = kwargs['email_address']
-    email.user.is_active = True
-    email.user.save()
-    assert email.user.is_active is True
+    email.user.userprofile.member.cast().confirm_email()
