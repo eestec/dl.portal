@@ -76,7 +76,9 @@
         <div class="clear"></div>
         <div id="video-description-wrapper">
             <div id="video-description-title">DESCRIPTION</div>
-            <div id="video-description">{{ video.description|link_urls|safe|linebreaksbr }}</div>
+            {% autoescape off %}
+            <div id="video-description">{{ video.description|force_escape|link_urls|safe|linebreaksbr }}</div>
+            {% endautoescape %}
         </div>
     </div>
 </div>
