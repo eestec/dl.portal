@@ -1,0 +1,13 @@
+Dear LC {{ lc.city }},
+
+It is our pleasure to welcome you to the EESTEC Distance Learning Portal!
+
+Below you may find the username and password which you can use to access the portal. We strongly recommend immediately changing the automatically generated password.
+
+username: {{ lc.username }}
+password: {{ password }}
+
+Thank you for deciding to join the Portal and we hope you enjoy it.
+
+Kind regards,
+EESTEC Distance Learning Portal Team

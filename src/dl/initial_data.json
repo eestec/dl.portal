@@ -33,5 +33,17 @@
         }, 
         "model": "auth.group", 
         "pk": 3
+    },
+    {
+        "fields": {
+            "name": "LCs", 
+            "permissions": [
+                ["add_comment", "distance_learning", "comment"],
+                ["view_comment", "distance_learning", "comment"],
+                ["add_video", "distance_learning", "video"]
+            ]
+        }, 
+        "model": "auth.group", 
+        "pk": 4
     }
 ]

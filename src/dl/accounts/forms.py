@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 import django.forms
 from accounts.models import Member, Student, University, Company
+from accounts.models import LocalCommittee
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
@@ -106,19 +107,16 @@ def _form_class_factory(model_class):
     return FormClass
 
 
-StudentForm = _form_class_factory(Student)
-CompanyForm = _form_class_factory(Company)
-UniversityForm = _form_class_factory(University)
 # A dict relating model classes to their respective form classes
-model_to_form = {
-    Student: StudentForm,
-    Company: CompanyForm,
-    University: UniversityForm,
-}
-
+_model_to_form = {}
+# Register all the Member models in the dict
+member_models = [Student, Company, University, LocalCommittee]
+for member_model in member_models:
+    _model_to_form[member_model] = _form_class_factory(member_model)
+    
 
 def get_form_for_model(model_class):
     """
     Returns a Form class for the given model class.
     """
-    return model_to_form.get(model_class, None)
+    return _model_to_form.get(model_class, None)

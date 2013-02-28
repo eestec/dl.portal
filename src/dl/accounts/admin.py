@@ -3,9 +3,12 @@ from django import forms
 from django.core import urlresolvers
 
 from accounts.models import Member, Student, Company, University
+from accounts.models import LocalCommittee
+
 
 class AdminMemberForm(forms.Form):
     active = forms.BooleanField()
+
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = (
@@ -84,6 +87,7 @@ class MemberAdmin(admin.ModelAdmin):
         }
     edit_link.allow_tags = True
 
+
 class MemberAdminForm(forms.ModelForm):
     active = forms.BooleanField(required=False)
 
@@ -100,26 +104,16 @@ class MemberAdminForm(forms.ModelForm):
             m.save()
         return m
 
-class StudentAdminForm(MemberAdminForm):
-    class Meta:
-        model = Student
 
-class CompanyAdminForm(MemberAdminForm):
-    class Meta:
-        model = Company
-
-class UniversityAdminForm(MemberAdminForm):
-    class Meta:
-        model = University
-
-class StudentAdmin(MemberAdmin):
-    form = StudentAdminForm
-class CompanyAdmin(MemberAdmin):
-    form = CompanyAdminForm
-class UniversityAdmin(MemberAdmin):
-    form = UniversityAdminForm
-
-admin.site.register(Member, MemberAdmin)
-admin.site.register(Student, StudentAdmin)
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(University, UniversityAdmin)
+# Register all the Member models in the admin
+member_models = [Student, Company, University, LocalCommittee]
+for member_model in member_models:
+    # Create the Form class
+    class SpecificAdminForm(MemberAdminForm):
+        class Meta:
+            model = member_model
+    # Create the Admin class
+    class SpecificAdmin(MemberAdmin):
+        form = SpecificAdminForm
+    # Finally register
+    admin.site.register(member_model, SpecificAdmin)

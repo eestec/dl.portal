@@ -1,11 +1,17 @@
 from django.db import models
 from django.db.models.fields.related import SingleRelatedObjectDescriptor
 from django.contrib.auth.models import User, Group
+from django.conf import settings
 from django.dispatch import receiver
+from django.template.loader import render_to_string
 
 from distance_learning.models import Video
 
 from accounts.utils import get_or_none
+from common.utils import generate_random_string
+
+from common.utils import send_mail
+
 from emailconfirmation.signals import email_confirmed
 
 
@@ -314,6 +320,55 @@ class University(Member):
         verbose_name_plural = "universities"
 
 
+class LocalCommittee(Member):
+    """
+    A Member sublcass defining attributes for EESTEC LC member accounts.
+    """
+    city = models.CharField(max_length=60)
+    email = models.EmailField()
+    country = models.CharField(max_length=55, blank=True)
+
+    @models.permalink
+    def get_admin_url(self):
+        return ('admin:accounts_localcommittee_change', (self.id,), {})
+
+    def __init__(self, *args, **kwargs):
+        self.group_name = 'LCs'
+        super(LocalCommittee, self).__init__(*args, **kwargs)
+
+    def __unicode__(self):
+        return u'LC %s' % (self.city)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides the save method to provide a default username and a random
+        password to LCs which are emailed to the provided email address.
+        """
+        create = self.id is None
+        if create:
+            self.username = u'lc_' + self.city.lower()
+            # Give the user a randomly generated password
+            password = generate_random_string()
+            self.password = password
+            # Compose the email to send to the LC
+            context = {
+                'lc': self,
+                'password': password,
+            }
+            subject = render_to_string(
+                'registration/lc_register_email_subject.txt')
+            subject = subject.strip()
+            message = render_to_string(
+                'registration/lc_register_email_text.txt',
+                context)
+            send_mail(subject,
+                      message,
+                      settings.DEFAULT_FROM_EMAIL,
+                      [self.email])
+        # Delegate upward to the parent classes
+        super(LocalCommittee, self).save(*args, **kwargs)
+
+
 class UserProfile(models.Model):
     """
     A model describing a user profile.  User profiles attach additional
@@ -343,4 +398,3 @@ def handle_email_confirmed(sender, **kwargs):
     email.user.is_active = True
     email.user.save()
     assert email.user.is_active is True
-    print 'Activated the user'

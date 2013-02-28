@@ -1,5 +1,8 @@
+import string
+import random
+
 from django.conf import settings
-from emailconfirmation.tasks import send_email
+from common.tasks import send_email
 
 
 def get_send_mail():
@@ -18,3 +21,12 @@ def get_send_mail():
             return _send_mail(*args, **kwargs)
 
     return send_mail
+
+
+send_mail = get_send_mail()
+
+
+def generate_random_string(length=6,
+                           char_pool=string.ascii_letters + string.digits):
+        return u''.join(random.choice(char_pool) for _ in xrange(length))
+

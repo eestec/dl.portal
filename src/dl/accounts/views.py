@@ -32,7 +32,6 @@ from distance_learning.models import Video
 
 from emailconfirmation.models import EmailAddress
 
-from accounts.forms import StudentForm, UniversityForm, CompanyForm
 from accounts.forms import get_form_for_model
 from accounts.utils import redirect_if_logged_in, get_or_none
 from accounts.utils import render_to_json_response
@@ -93,7 +92,7 @@ def register_student(request):
     # Delegates to the generic registration method with the apropriate
     # parameters set.
     return _generic_register_member(request,
-                                    StudentForm,
+                                    get_form_for_model(Student),
                                     'register-student')
 
 
@@ -102,7 +101,7 @@ def register_university(request):
     A view for registering a new University member.
     """
     return _generic_register_member(request,
-                                    UniversityForm,
+                                    get_form_for_model(University),
                                     'register-university')
 
 
@@ -111,7 +110,7 @@ def register_company(request):
     A view for registering a new Company member.
     """
     return _generic_register_member(request,
-                                    CompanyForm,
+                                    get_form_for_model(Company),
                                     'register-company')
 
 
@@ -347,6 +346,7 @@ class ProfileSettingsView(UpdateView):
     def form_valid(self, form):
         SUCCESS_MESSAGE = 'Your profile was updated successfully.'
         if self.request.is_ajax():
+            form.save()
             return render_to_json_response({
                 'status': 'ok',
                 'message': SUCCESS_MESSAGE
