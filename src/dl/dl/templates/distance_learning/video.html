@@ -61,7 +61,7 @@
             <div id="keywords">
                 <span>tags: </span>
                 {% for keyword in video.keywords %}
-                    <span class="keyword">{% if not forloop.counter0 == 0 %}, {% endif %}{{ keyword }}</span>
+                    <span class="keyword">{% if not forloop.counter0 == 0 %}, {% endif %}<a href="{% url 'dl-video-search' %}?q={{ keyword|urlencode }}">{{ keyword }}</a></span>
                 {% endfor %}
             </div>
             <div class="video-buttons">
