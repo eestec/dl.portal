@@ -30,31 +30,6 @@ $(function() {
         event.stopPropagation();
     });
 
-    $('#add-favorite, #add-watch-later').click(function() {
-        var $this = $(this);
-        var type = '';
-        if ($this[0].id == 'add-favorite') {
-            type = 'favorites';
-        } else if ($this[0].id == 'add-watch-later') {
-            type = 'watch later';
-        }
-        var url = $this.attr('href');
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                'video_id': $('#video-id').html()
-            },
-            success: function(data) {
-                if (data.status === 'ok') {
-                    var $parent = $this.parent();
-                    $parent.html('Added to ' + type);
-                }
-            }
-        });
-        return false;
-    });
-
     $('#search-input').autocomplete({
         source: function(request, response) {
             // Wraps the usual requests in a custom ajax call which uses "q"

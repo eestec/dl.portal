@@ -230,7 +230,7 @@ def video_search(request):
     return render_to_response(
         'distance_learning/video_list.html', {
             'videos': page,
-            'page_links': (urllib.urlencode({'q': q, 'page': p + 1})
+            'page_links': (urllib.urlencode({'q': unicode(q).encode('utf-8'), 'page': p + 1})
                            for p in range(page.paginator.num_pages)),
         },
         context_instance=RequestContext(request))

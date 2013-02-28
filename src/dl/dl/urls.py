@@ -20,7 +20,7 @@ urlpatterns += patterns('',
 
 # Account related url mappings
 # TODO: Move to an accounts/urls file
-from accounts.views import ProfileSettingsView
+from accounts.views import ProfileSettingsView, FavoritesView, WatchLaterView
 urlpatterns += patterns('',
     url(r'^accounts/login/$',
         'accounts.views.custom_login',
@@ -41,12 +41,18 @@ urlpatterns += patterns('',
     url(r'^accounts/profile/favorites/$',
         'accounts.views.add_favorite',
         name='profile-add-favorite'),
+    url(r'^accounts/profile/favorites/video/(?P<video_id>\d+)/$',
+        FavoritesView.as_view(),
+        name='profile-favorite'),
     url(r'^accounts/profile/favorites/(?P<page_number>\d+)/$',
         'accounts.views.get_favorites',
         name='profile-get-favorites'),
     url(r'^accounts/profile/watch-later/$',
         'accounts.views.add_watch_later',
         name='profile-add-watch-later'),
+    url(r'^accounts/profile/watch-later/video/(?P<video_id>\d+)/$',
+        WatchLaterView.as_view(),
+        name='profile-watch-later'),
     url(r'^accounts/profile/watch-later/(?P<page_number>\d+)/$',
         'accounts.views.get_watch_later',
         name='profile-get-watch-later'),

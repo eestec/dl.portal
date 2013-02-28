@@ -21,6 +21,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse, reverse_lazy
 
 from django.views.generic.edit import UpdateView
+from django.views.generic.base import View
 
 # Generic view for user login provided by contrib.auth
 from django.contrib import messages
@@ -227,6 +228,47 @@ def get_favorites(request, page_number):
              'result_type': 'favorites',
              'pages': range(page.paginator.num_pages)},
             context_instance=RequestContext(request))
+
+
+class FavoritesView(View):
+    def delete(self, *args, **kwargs):
+        if not self.request.user.is_authenticated():
+            return render_to_json_response({
+                'status': 'fail',
+                'message': 'Not authenticated',
+            })
+        video_id = kwargs.get('video_id', None)
+        if video_id is not None:
+                self.request.user.userprofile.favorite_videos.remove(video_id)
+                return render_to_json_response({
+                    'status': 'ok',
+                })
+        else:
+            return render_to_json_response({
+                'status': 'fail',
+                'message': 'Does not exist',
+            })
+
+
+class WatchLaterView(View):
+    def delete(self, *args, **kwargs):
+        if not self.request.user.is_authenticated():
+            return render_to_json_response({
+                'status': 'fail',
+                'message': 'Not authenticated',
+            })
+        video_id = kwargs.get('video_id', None)
+        if video_id is not None:
+                self.request.user.userprofile.watch_later_videos.remove(
+                    video_id)
+                return render_to_json_response({
+                    'status': 'ok',
+                })
+        else:
+            return render_to_json_response({
+                'status': 'fail',
+                'message': 'Does not exist',
+            })
 
 
 @login_required
