@@ -124,13 +124,13 @@ class Video(models.Model):
         upload_to=lambda instance, filename: '/'.join([instance.name,
                                                        'handouts',
                                                        filename]),
-        max_upload_size=5 * 1024 * 1024,
+        max_upload_size=15 * 1024 * 1024,
         blank=True)
     presentation = LimitedFileField(
         upload_to=lambda instance, filename: '/'.join([instance.name,
                                                        'presentations',
                                                        filename]),
-        max_upload_size=5 * 1024 * 1024,
+        max_upload_size=15 * 1024 * 1024,
         blank=True)
     video_type = models.ForeignKey(VideoType)
     keywords = CommaDelimitedTextField(max_length=150)
