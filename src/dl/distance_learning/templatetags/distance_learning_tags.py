@@ -47,6 +47,7 @@ def link_urls(value):
             parts.append(value[last:m.start()])
             parts.append('<a href="' + m.group() + '">' + m.group() + '</a>')
             last = m.end()
+        parts.append(value[last:])
         return ''.join(parts)
     except:
         return value
