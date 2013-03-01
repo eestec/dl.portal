@@ -218,7 +218,13 @@ PIPELINE_JS = {
             'dl/js/profile.js',
         ),
         'output_filename': 'dl/js/profile.js',
-    }
+    },
+    'browse': {
+        'source_filenames': (
+            'dl/js/browse.js',
+        ),
+        'output_filename': 'dl/js/browse.js',
+    },
 }
 
 # Haystack settings
