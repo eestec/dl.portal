@@ -35,7 +35,8 @@ from emailconfirmation.models import EmailAddress
 from accounts.models import Student, University, Company
 from accounts.forms import get_form_for_model
 from accounts.utils import redirect_if_logged_in, get_or_none
-from accounts.utils import render_to_json_response
+
+from common.utils import render_to_json_response
 
 import dl.settings as settings
 
@@ -177,13 +178,6 @@ def _paginate_video_set(query_set, page_number):
     return page
 
 
-def _video_to_dict(video):
-    """
-    Returns a dictionary representation of a Video object.
-    """
-    return video.to_dict()
-
-
 def _build_response(page):
     """
     Builds a response as a JSON encoded dictionary with a list of videos
@@ -192,7 +186,7 @@ def _build_response(page):
     videos = [] if page is None else page.object_list
     response = {
         'status': 'ok',
-        'videos': [_video_to_dict(video) for video in videos],
+        'videos': [video.to_dict() for video in videos],
         'total': page.paginator.count,
         'page': page.number,
     }

@@ -22,47 +22,49 @@ $(function() {
     History.Adapter.bind(window, 'statechange', function() {
         var state = History.getState();
         var $element = $('#' + state.data.id);
-        $('.sec-nav-item.selected').removeClass('selected');
+        // Keep the selected item from the sec-nav-menu if a submenu item was
+        // chosen.
+        if (state.data.id.substr(0, 8) !== 'scroller') {
+            $('.sec-nav-item.selected').removeClass('selected');
+        }
+        $('.scroller-option.selected').removeClass('selected');
         $element.addClass('selected');
         $('.messages').remove();
         var url = state.url;
-        // Some logic has to be special-cased for the settings menu since it
-        // is different than the others (doesn't show videos)
-        var isSettings = state.data.id === 'settings';
-        var format = isSettings ? 'html' : 'json';
+        console.debug(url);
+        console.debug(state);
+        console.debug(state.data.id);
+        $('#nav-dropdown').slideUp();
         $('#main-content').fadeTo(fadeSpeed, 0, function() {
             $('#main-content .column, #main-content .wrapper').fadeTo(0, 0);
             $('#main-content').spin(spinnerOpts).fadeTo(0, 1);
             $.ajax({
                 url: url,
                 data: {
-                    format: format
+                    format: "json"
                 },
                 success: function(data) {
+                    console.debug(data);
                     $('#main-content').spin(false).fadeTo(0, 0);
                     $('#main-content .column, #main-content .wrapper').fadeTo(0, 1);
-                    if (format === 'json') {
-                        // JSON is checked for an additional indicator of success
-                        if (data.status === 'ok') {
+                    if (data.status === 'ok') {
+                        if (data.categories === undefined) {
+                            if (state.data.id.substr(0, 8) === 'scroller') {
+                                // Show the submenu if one of its options was
+                                // chosen
+                                $('#nav-dropdown').slideDown();
+                            }
                             populateVideos(data);
+                        } else {
+                            $('#nav-dropdown').slideDown();
+                            populateCategories(data.categories);
                         }
-                    } else if (format === 'html') {
-                        // HTML is simply embedded in the right place...
-                        showForm(data);
                     }
                 }
             });
         });
-        History.log(state.data, state.title, state.url);
     });
-    function showForm(data) {
-        $('.videos-column').html('');
-        $('.column').hide();
-        $('.pagination').hide();
-        $('#main-content').append($('<div class="wrapper"></div>').html(data))
-                          .fadeTo(fadeSpeed, 1);
-        initFormAjax();
-    }
+
     function populateVideos(data) {
         // First get the container divs back (if they were hidden by settings)
         $('#main-content > .wrapper').remove();
@@ -86,7 +88,7 @@ $(function() {
         var pages = (data.total / 6) + 0.5;
         pages = pages.toFixed();
         for (var i = 0; i < pages; ++i) {
-            radio_buttons += '<div class="radiobutton"></div>';
+            radio_buttons += '<a href="' + document.URL + '?page=' + (i + 1) + '"><div class="radiobutton"></div></a>';
         }
         var radiobutton_offset =
             ($('#content').width() - pages * (
@@ -94,7 +96,7 @@ $(function() {
                  parseInt($('.radiobutton').css('margin-right')))) / 2;
         $pagination.html(radio_buttons)
                    .css('margin-left',  radiobutton_offset + 'px');
-        $($pagination.children()[pageNumber - 1]).addClass('selected');
+        $($pagination.find('.radiobutton')[pageNumber - 1]).addClass('selected');
         $('.videos-column').each(function(index) {
             $(this).html(_.template(
                     video_template,
@@ -102,70 +104,59 @@ $(function() {
         });
         $('#main-content').fadeTo(fadeSpeed, 1);
     }
-    $('.sec-nav-item a').click(function() {
+
+    var categoryTemplate =
+        '<% _.each(categories, function(category, index) { %>' + 
+        '<span class="scroller-option" id="scroller-option-<%= index %>"><a href="<%= category.url %>"><%= category.name %></a></span>'+
+        '<% }); %>';
+    function populateCategories(categories) {
+        $('#scroller-inner').html(_.template(
+                    categoryTemplate,
+                    {'categories': categories}));
+        adjustScroller();
+        $('#scroller-inner').slideDown();
+        $('#scroller-inner a').click(clickHandler);
+    }
+
+    function centerElements() {
+        // Main navigation
+        var elementWidth = 0;
+        $('.sec-nav-items').children().each(function(i, element) {
+            var $element = $(element);
+            elementWidth +=
+                $element.width() + parseInt($element.css('margin-right'));
+        });
+        $('.sec-nav-items').width(elementWidth);
+    }
+    function adjustScroller() {
+        var elementWidth = 0;
+        $('#nav-dropdown').show();
+        $('#scroller-inner').width(1000);
+        $('#scroller-inner').children().each(function(i, element) {
+            var $element = $(element);
+            elementWidth +=
+                $element.width() + parseInt($element.css('margin-right'));
+        });
+        $('#scroller-inner').width(elementWidth);
+        if (elementWidth > 1000) elementWidth = 1000;
+        $('#scroller-wrap').width(elementWidth);
+        $('#scroller').width(elementWidth);
+        $('#nav-dropdown').width(elementWidth + 2 * (23 + 10));
+        if ($('.scroller-option').length == 0) {
+            $('#nav-dropdown').hide();
+        }
+    }
+    centerElements();
+    adjustScroller();
+    // Event handlers
+    function clickHandler(event) {
+        event.preventDefault();
         var $this = $(this);
         var url = $this.attr('href');
         History.pushState({
             id: $this.parent().attr('id'),
             path: url
         }, '', url);
-        return false;
-    });
-    function getFavorites(pageNumber) {
-        var getFavoritesUrl = "/profile/favorites/";
-        $.ajax({
-            url: getFavoritesUrl + pageNumber + '/',
-            success: function(data) {
-                if (data.status === 'ok') {
-                    populateVideos(data);
-                }
-            }
-        });
     }
-    function getWatchLater(pageNumber) {
-        var getWatchLaterUrl = "/profile/watch-later/";
-        $.ajax({
-            url: getWatchLaterUrl + pageNumber + '/',
-            success: function(data) {
-                if (data.status === 'ok') {
-                    populateVideos(data);
-                }
-            }
-        });
-    }
-    var errorListTemplate =
-        "<div class='errors'><ul class='errorlist'> \
-        <% _.each(errors, function(error) { %> \
-                <li><%= error %></li> \
-        <% }); %> \
-        </ul></div>";
-
-    /**
-     * The function hooks up the settings form submit event to a custom
-     * callback.
-     */
-    function initFormAjax() {
-        $('#settings-form').submit(function() {
-            var $this = $(this);
-            $.post(
-                $this.attr('action'), $this.serialize(),
-                function(data) {
-                    $('.errors').remove();
-                    if (data.status === 'ok') {
-                        $('#main-content').prepend(
-                            $('<div class="messages"></div>').html(data.message));
-                    }
-                    if (data.status === 'validation failed') {
-                        $.each(data.errors, function(key, value) {
-                            $('input[name="' + key + '"]').parent().after(
-                                _.template(errorListTemplate,
-                                           {errors: value}));
-                        });
-                    }
-                },
-                "json");
-            return false;
-        });
-    }
-    initFormAjax();
+    $('.sec-nav-item a, .scroller-option a').click(clickHandler);
 });

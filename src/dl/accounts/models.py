@@ -242,6 +242,18 @@ class Member(models.Model):
         # If no child is found, it returns None.
         return self._subobject
 
+    _video_set = None
+    @property
+    def video_set(self):
+        """
+        Returns a QuerySet with all videos related to the Member object.
+        A Member is related to a video if he submitted the Video.
+        """
+        # Just proxies the User's video_set
+        if self._video_set is None:
+            self._video_set = self.userprofile.user.video_set
+        return self._video_set
+
     def __unicode__(self):
         return u'%s' % self.username
 

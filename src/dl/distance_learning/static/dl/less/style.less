@@ -465,5 +465,52 @@ a {
     margin-right: 0px;
 }
 
+#nav-dropdown {
+    @button-width: 23px;
+    @button-height: 33px;
+    width: 600px;
+    margin: 0 auto;
+    display: none;
+    #scroller {
+        width: 500px;
+        height: 33px;
+        float: left;
+        #scroller-wrap {
+            min-height: @button-height;
+            #scroller-inner {
+                overflow: hidden !important;
+                width: 2500px;
+                height: 18px;
+                margin-top: (@button-height - 18 - 2) / 2;
+                font-size: 15px;
+                .scroller-option {
+                    color: @medium-gray;
+                    margin-right: 10px;
+                    height: 16px;
+                    float: left;
+                    cursor: pointer;
+                    &.selected, &:hover {
+                        color: @dark-gray;
+                    }
+                }
+            }
+        }
+    }
+    .bttL, .bttR {
+        width: @button-width;
+        height: @button-height;
+        float: left;
+    }
+    .bttL {
+        background: url("@{img-path}/arrow1.png") no-repeat center;
+        margin-right: 10px;
+    }
+    .bttR {
+        background: url("@{img-path}/arrow2.png") no-repeat center;
+    }
+}
+
+
+
 @import "register.less";
 @import "video.less";

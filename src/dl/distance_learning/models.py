@@ -54,14 +54,17 @@ class VideoManager(models.Manager):
         """
         return self.all_approved().filter(active_broadcast=True)
 
-    def get_most_viewed(self, limit=5):
+    def get_most_viewed(self, limit=None):
         """
         Returns videos sorted by the number of its hits.
         It should return `limit` results.
         `limit` defaults to 3 results.
         """
         videos = self.all_approved()
-        return sorted(videos, key=lambda v: v.views, reverse=True)[:limit]
+        if limit is not None:
+            return sorted(videos, key=lambda v: v.views, reverse=True)[:limit]
+        else:
+            return sorted(videos, key=lambda v: v.views, reverse=True)
 
     def get_recent(self, limit=5):
         """

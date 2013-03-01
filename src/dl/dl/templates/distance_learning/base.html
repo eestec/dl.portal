@@ -24,7 +24,7 @@
                 </div>
                 <div class="main-nav-bar-sep"></div>
                 <div class="main-nav-bar-item">
-                    <a href="{% url 'dl-video-all' %}"><div id="browse"></div></a>
+                    <a href="{% url 'dl-browse' %}"><div id="browse"></div></a>
                 </div>
         {% if user.userprofile.member.can_upload_video or user.is_superuser %}
                 <div class="main-nav-bar-item">
@@ -93,7 +93,7 @@
             </div>
             <div class="bottom-nav-bar-sep"></div>
             <div class="bottom-nav-bar-item">
-                <a href="{% url 'dl-video-all' %}"><div id="browse-bottom"></div></a>
+                <a href="{% url 'dl-browse' %}"><div id="browse-bottom"></div></a>
             </div>
             <div class="bottom-nav-bar-item">
                 <a href="#"><div class="nav-inner">ABOUT</div></a>

@@ -1,6 +1,7 @@
 """
 Distance Learning application views.
 """
+from collections import namedtuple
 from django.template import RequestContext
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -16,12 +17,17 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from distance_learning.models import Video
+from distance_learning.models import Video, VideoSubject
 from distance_learning.forms import VideoUploadForm
 from distance_learning.forms import VideoSearchForm
 from distance_learning.forms import CommentPostForm
 from distance_learning.utils import get_or_none
 from distance_learning.uploadhandlers import QuotaUploadHandler
+
+from accounts.models import LocalCommittee
+
+from common.utils import render_to_json_response
+from common.utils import paginate_video_set
 
 from haystack.query import SearchQuerySet, AutoQuery, SQ
 
@@ -34,7 +40,7 @@ def index(request):
     content which is to be rendered in the template.
     """
     # TODO: Get most popular videos
-    videos = Video.objects.get_most_viewed()
+    videos = Video.objects.get_most_viewed(limit=5)
     return render_to_response('distance_learning/index.html',
                               {'videos': videos},
                               context_instance=RequestContext(request))
@@ -236,6 +242,12 @@ def video_search(request):
         context_instance=RequestContext(request))
 
 
+def browse(request):
+    """
+    A view to render the browse page.
+    """
+    return redirect('distance_learning.views.most_viewed_videos')
+
 def all_videos(request):
     """
     A view which renders all videos on a page.
@@ -254,21 +266,173 @@ def all_videos(request):
         context_instance=RequestContext(request))
 
 
-def most_viewed_videos(request):
+def _build_response(page):
+    """
+    Builds a response as a JSON encoded dictionary with a list of videos
+    and additionaly information about total videos found, the current page.
+    """
+    videos = [] if page is None else page.object_list
+    response = {
+        'status': 'ok',
+        'videos': [video.to_dict() for video in videos],
+        'total': page.paginator.count,
+        'page': page.number,
+    }
+    return response
+
+
+def _get_manager_for_category(category_name):
+    """
+    Gets the ModelManager for the search category represented by the parameter
+    """
+    categories = {
+        u'lc': LocalCommittee.objects,
+        u'subject': VideoSubject.objects,
+    }
+    return categories.get(category_name, None)
+
+
+def category_search_json(request, category_name):
+    category_manager = _get_manager_for_category(category_name)
+    if category_manager is None:
+        return render_to_json_response({
+            'status': 'fail',
+            'message': 'Category not found',
+        })
+
+    return render_to_json_response({
+        'status': 'ok',
+        'categories': [{
+            'name': unicode(category),
+            'url': reverse('dl-video-subcategory-search',
+                           args=(category_name, category.pk)),
+            }
+            for category in category_manager.all()
+        ]
+    })
+
+
+def subcategory_search_json(request, category_name, subcategory_id):
+    category_manager = _get_manager_for_category(category_name)
+    if category_manager is None:
+        return render_to_json_response({
+            'status': 'fail',
+            'message': 'Category not found',
+        })
+
+    category = category_manager.get(pk=subcategory_id)
+    page_number = request.GET.get('page', 1)
+    page = paginate_video_set(category.video_set.all(), page_number)
+
+    return render_to_json_response(_build_response(page))
+
+
+def most_viewed_videos_json(request):
     """
     A view returning a JSON encoded list of the most viewed videos.
     """
-    return HttpResponse(
-        simplejson.dumps(
-            [video.to_dict() for video in Video.objects.get_most_viewed()]),
-        content_type='application/json')
+    limit = request.GET.get('limit', None)
+    page_number = request.GET.get('page', 1)
+    page = paginate_video_set(Video.objects.get_most_viewed(limit=limit),
+                              page_number)
+    return render_to_json_response(_build_response(page))
+
+
+def recent_videos_json(request):
+    """
+    A view returning a JSON encoded list of the most recent videos.
+    """
+    limit = request.GET.get('limit', None)
+    page_number = request.GET.get('page', 1)
+    page = paginate_video_set(Video.objects.get_recent(limit=limit),
+                              page_number)
+
+    return render_to_json_response(_build_response(page))
+
+
+def category_search(request, category_name):
+    if request.is_ajax():
+        return category_search_json(request, category_name)
+
+    category_manager = _get_manager_for_category(category_name)
+    Category = namedtuple('Category', 'name active url')
+    return render(request, 'distance_learning/browse.html', {
+        'categories': [
+            Category(name=unicode(category),
+                     url=reverse('dl-video-subcategory-search',
+                           args=(category_name, category.pk)),
+                     active=unicode(category) == category_name)
+            for category in category_manager.all()
+        ],
+    })
+
+def subcategory_search(request, category_name, subcategory_id):
+    if request.is_ajax():
+        return subcategory_search_json(request, category_name, subcategory_id)
+
+    category_manager = _get_manager_for_category(category_name)
+    if category_manager is None:
+        raise Http404
+
+    category = category_manager.get(pk=subcategory_id)
+    page_number = request.GET.get('page', 1)
+
+    Category = namedtuple('Category', 'name active url')
+    page = paginate_video_set(category.video_set.all(), page_number)
+    if page is None:
+        raise Http404
+
+    return render(request, 'distance_learning/browse.html', {
+        'categories': [
+            Category(name=unicode(category),
+                     url=reverse('dl-video-subcategory-search',
+                           args=(category_name, category.pk)),
+                     active=category.pk == int(subcategory_id))
+            for category in category_manager.all()
+        ],
+        'videos': page,
+        'pages': range(page.paginator.num_pages),
+        category_name: True,
+    })
+
+
+
+def most_viewed_videos(request):
+    """
+    """
+    if request.is_ajax():
+        return most_viewed_videos_json(request)
+
+    limit = request.GET.get('limit', None)
+    page_number = request.GET.get('page', 1)
+    page = paginate_video_set(Video.objects.get_most_viewed(limit=limit),
+                              page_number)
+    if page is None:
+        raise Http404
+
+    return render(request, 'distance_learning/browse.html', {
+        'videos': page,
+        'pages': range(page.paginator.num_pages),
+        'most_viewed': True,
+    })
 
 
 def recent_videos(request):
     """
-    A view returning a JSON encoded list of the most recent videos.
     """
-    return HttpResponse(
-        simplejson.dumps(
-            [video.to_dict() for video in Video.objects.get_recent()]),
-        content_type='application/json')
+    if request.is_ajax():
+        return recent_videos_json(request)
+
+    limit = request.GET.get('limit', None)
+    page_number = request.GET.get('page', 1)
+    page = paginate_video_set(Video.objects.get_recent(limit=limit),
+                              page_number)
+    if page is None:
+        raise Http404
+
+    return render(request, 'distance_learning/browse.html', {
+        'videos': page,
+        'pages': range(page.paginator.num_pages),
+        'recent': True,
+    })
+

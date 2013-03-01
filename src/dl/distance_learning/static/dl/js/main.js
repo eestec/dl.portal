@@ -112,10 +112,13 @@ $(function() {
             $mySpinner.spin();
             $.ajax({
                 url: url,
-                success: function(videos) {
+                data: {
+                    'limit': 5
+                },
+                success: function(data) {
                     // Stop the spinner before populating the videos
                     $mySpinner.remove();
-                    populateVideos(videos, $this);
+                    populateVideos(data.videos, $this);
                 }
             });
         });

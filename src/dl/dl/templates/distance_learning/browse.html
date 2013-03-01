@@ -1,0 +1,147 @@
+{% extends "distance_learning/base.html" %}
+{% load url from future %}
+{% load staticfiles %}
+
+{% block extra-js %}
+{% spaceless %}
+    {% include "distance_learning/video-template.html" %}
+<script type="text/javascript" src="{% static 'dl/js/jquery.history.js' %}"></script>
+<script type="text/javascript" src="{% static "dl/js/spin.min.js" %}"></script>
+<script type="text/javascript" src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="http://github.com/brandonaaron/jquery-mousewheel/raw/master/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="{% static 'dl/js/browse.js' %}"></script>
+<script>
+    $(document).ready(function(){
+    var animateTime = 10,
+        offsetStep = 5,
+        scrollWrapper = $('#scroller-wrap');
+    
+    //event handling for buttons "left", "right"
+    $('.bttR, .bttL')
+        .mousedown(function() {
+            scrollWrapper.data('loop', true);
+            loopingAnimation($(this), $(this).is('.bttR') );
+        })
+        .bind("mouseup mouseout", function(){
+            scrollWrapper.data('loop', false).stop();
+            $(this).data('scrollLeft', this.scrollLeft);
+        });
+    
+    scrollWrapper
+        .mousedown(function(event) {
+            $(this)
+                .data('down', true)
+                .data('x', event.clientX)
+                .data('scrollLeft', this.scrollLeft);
+            return false;
+        })
+        .mouseup(function (event) {
+            $(this).data('down', false);
+        })
+        .mousemove(function (event) {
+            if ($(this).data('down')) {
+                this.scrollLeft = $(this).data('scrollLeft') + $(this).data('x') - event.clientX;
+            }
+        })
+        .mousewheel(function (event, delta) {
+            this.scrollLeft -= (delta * 30);
+        })
+        .css({
+            'overflow' : 'hidden'
+        });
+    
+    loopingAnimation = function(el, dir){
+        if(scrollWrapper.data('loop')){
+            var sign = (dir) ? offsetStep : -offsetStep;
+            scrollWrapper[0].scrollLeft += sign;
+            setTimeout( function(){ loopingAnimation(el,dir) }, animateTime );
+                                   }
+                        return false;
+        }; 
+    });
+</script>
+{% endspaceless %}
+{% endblock %}
+
+{% block main_content %}
+{% spaceless %}
+    <div class="sec-nav">
+        <div class="sec-nav-items">
+            <div id="most-viewed" class="sec-nav-item {{ most_viewed|yesno:"selected,no" }}"><a href="{% url 'dl-video-most-viewed' %}">MOST VIEWED</a></div>
+            <div id="recent" class="sec-nav-item {{ recent|yesno:"selected,no" }}"><a href="{% url 'dl-video-recent' %}">RECENT</a></div>
+            <div id="by-lc" class="sec-nav-item {{ lc|yesno:"selected,no" }}"><a href="{% url 'dl-video-category-search' category_name='lc' %}">BY LC</a></div>
+            <div id="by-subject" class="sec-nav-item {{ subject|yesno:"selected,no" }}"><a href="{% url 'dl-video-category-search' category_name='subject' %}">BY SUBJECT</a></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sec-nav-line"></div>
+
+    </div>
+    <div class="clear"></div>
+    <div id="nav-dropdown">
+        <div class="bttL"></div>
+        <div id="scroller">
+        <div id="scroller-wrap">
+            <div id="scroller-inner">
+            {% for category in categories %}
+            <div class="scroller-option {{ category.active|yesno:"selected,no"}}" id="scroller-option-{{ forloop.counter0 }}">
+                    <a href="{{ category.url }}">{{ category.name }}</a>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        </div>
+        <div class="bttR"></div>
+    </div>
+    <div class="clear"></div>
+
+<div id="main-content">
+    {% if messages %}
+    <div id="messages">
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="pagination">
+{% if videos %}
+{% for i in pages %}
+{% if i|add:1 == videos.number %}
+        <a href="{{ request.path }}?page={{ forloop.counter }}"><div class="selected radiobutton"></div></a>
+    {% else %}
+        <a href="{{ request.path }}?page={{ forloop.counter }}"><div class="radiobutton"></div></a>
+    {% endif %}
+{% endfor %}
+{% endif %}
+    </div>
+    <div class="clear"></div>
+
+    <div class="column">
+{% if videos %}
+    <div class="videos-column">
+    {% for video in videos.object_list|slice:":3" %}
+        {% include "distance_learning/video-thumbnail.html" %}
+    {% endfor %}
+    </div>
+{% else %}
+        <div class="videos-column">&nbsp;</div>
+{% endif %}
+    </div>
+    <div class="column">
+{% if videos %}
+    <div class="videos-column">
+    {% for video in videos.object_list|slice:"3:" %}
+        {% include 'distance_learning/video-thumbnail.html' %}
+    {% endfor %}
+    </div>
+{% else %}
+        <div class="videos-column">&nbsp;</div>
+{% endif %}
+    </div>
+    
+    <div class="clear"></div>
+
+</div>
+{% endspaceless %}
+{% endblock %}
+

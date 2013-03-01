@@ -160,5 +160,5 @@ def add_url_to_context(request):
     context.
     """
     return {
-        'full_path': request.build_absolute_uri(request.get_full_path())
+        'full_path': request.build_absolute_uri(request.path)
     }

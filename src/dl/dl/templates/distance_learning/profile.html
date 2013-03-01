@@ -31,9 +31,9 @@
 {% if videos %}
 {% for i in pages %}
 {% if i|add:1 == videos.number %}
-    <a href="{% url "profile-get-"|add:result_type i|add:1 %}"><div class="selected radiobutton"></div></a>
+        <a href="{% url "profile-get-"|add:result_type i|add:1 %}"><div class="selected radiobutton"></div></a>
     {% else %}
-        <a href={{ i|add:1 }}"><div class="radiobutton"></div></a>
+        <a href="{% url "profile-get-"|add:result_type i|add:1 %}"><div class="radiobutton"></div></a>
     {% endif %}
 {% endfor %}
 {% endif %}
