@@ -40,4 +40,5 @@ $(function() {
         });
     });
 
+    $('#video-description').linkify();
 });
