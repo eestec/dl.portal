@@ -69,6 +69,7 @@ urlpatterns += patterns('',
 
 # Distance learning mappings
 # TODO: Move to a distance_learning/urls file
+from django.views.generic import TemplateView
 urlpatterns += patterns('',
     url(r'^$',
         'distance_learning.views.index',
@@ -126,6 +127,16 @@ urlpatterns += patterns('',
     url(r'^api/video/category/(?P<category_name>[a-zA-Z]+)/(?P<subcategory_id>[0-9a-zA-Z]+)/$',
         'distance_learning.views.subcategory_search_json',
         name='dl-video-subcategory-search-json'),
+    # Flatpages-like pages
+    url(r'^about/$',
+        TemplateView.as_view(template_name="distance_learning/about.html"),
+        name="dl-about"),
+    url(r'^faq/$',
+        TemplateView.as_view(template_name="distance_learning/faq.html"),
+        name="dl-faq"),
+    url(r'^eestec/$',
+        TemplateView.as_view(template_name="distance_learning/eestec.html"),
+        name="dl-eestec"),
 )
 
 # contrib.admin patterns

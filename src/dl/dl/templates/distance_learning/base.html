@@ -33,7 +33,7 @@
         {% endif %}
                 <div class="nav-right-side">
                     <div class="main-nav-bar-item">
-                        <a href="#"><div class="nav-inner">ABOUT</div></a>
+                        <a href="{% url 'dl-about' %}"><div class="nav-inner">ABOUT</div></a>
                     </div>
                     <div class="main-nav-bar-item">
                         <a href="{% url 'dl-live' %}"><div class="nav-inner bold">LIVE!</div></a>
@@ -96,7 +96,7 @@
                 <a href="{% url 'dl-browse' %}"><div id="browse-bottom"></div></a>
             </div>
             <div class="bottom-nav-bar-item">
-                <a href="#"><div class="nav-inner">ABOUT</div></a>
+                <a href="{% url 'dl-about' %}"><div class="nav-inner">ABOUT</div></a>
             </div>
             <div class="bottom-nav-bar-item">
                 <a href="#"><div class="nav-inner bold">CONTACT</div></a>
@@ -138,6 +138,8 @@
             <div class="right">
                 <div class="left"><a href="#">terms of service</a></div>
                 <div class="left"><a href="#">contact</a></div>
+                <div class="left"><a href="{% url 'dl-eestec' %}">eestec</a></div>
+                <div class="left"><a href="{% url 'dl-faq' %}">faq</a></div>
             </div>
         </div>
     </body>

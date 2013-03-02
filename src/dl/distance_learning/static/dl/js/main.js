@@ -138,4 +138,8 @@ $(function() {
         var url = fetchUrls['show-most-viewed'];
         loadVideos(url, $('.videos-column', $this.parents('.column')));
     });
+    // FAQ
+    $('ol#faq li').click(function() {
+        $(this).next('div.answer').slideToggle();
+    });
 });

@@ -27,6 +27,26 @@
 .wrapper {
     text-align: center;
 }
+.text-title {
+    color: @blue;
+    font-size: 20px;
+}
+.text {
+    text-align: justify;
+    a {
+        color: lighten(@blue, 5%);
+    }
+    ol#faq {
+        li {
+            color: @blue;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        div.answer {
+            display: none;
+        }
+    }
+}
 .form {
     display: inline-block;
     text-align: left;
