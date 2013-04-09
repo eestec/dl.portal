@@ -19,8 +19,12 @@ $(function() {
         top: '20px', // Top position relative to parent in px
         left: '565px' // Left position relative to parent in px
     };
+    /**
+     * Handling navigation by using HTML5's history.
+     */
     History.Adapter.bind(window, 'statechange', function() {
         var state = History.getState();
+        // The ID of the clicked element is a part of the state.
         var $element = $('#' + state.data.id);
         // Keep the selected item from the sec-nav-menu if a submenu item was
         // chosen.
@@ -31,9 +35,6 @@ $(function() {
         $element.addClass('selected');
         $('.messages').remove();
         var url = state.url;
-        console.debug(url);
-        console.debug(state);
-        console.debug(state.data.id);
         $('#nav-dropdown').slideUp();
         $('#main-content').fadeTo(fadeSpeed, 0, function() {
             $('#main-content .column, #main-content .wrapper').fadeTo(0, 0);
@@ -44,7 +45,6 @@ $(function() {
                     format: "json"
                 },
                 success: function(data) {
-                    console.debug(data);
                     $('#main-content').spin(false).fadeTo(0, 0);
                     $('#main-content .column, #main-content .wrapper').fadeTo(0, 1);
                     if (data.status === 'ok') {
@@ -146,8 +146,6 @@ $(function() {
             $('#nav-dropdown').hide();
         }
     }
-    centerElements();
-    adjustScroller();
     // Event handlers
     function clickHandler(event) {
         event.preventDefault();
@@ -159,8 +157,16 @@ $(function() {
         }, '', url);
     }
     $('.sec-nav-item a, .scroller-option a').click(clickHandler);
+
+    // Do work
+    centerElements();
+    adjustScroller();
 });
 
+/**
+ * Initializes the horizontally scrollable div.
+ * Used for displaying the list of searchable categories.
+ */
 $(document).ready(function() {
     var animateTime = 10,
     offsetStep = 5,
