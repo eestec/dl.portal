@@ -104,9 +104,12 @@ a {
             float: right;
             height: 100%;
         }
+        @logo-small-height: 62px;
+        @logo-small-width: 100px;
         .main-nav-bar-item {
             float: left;
             height: @height;
+            width: @logo-small-width;
             margin-right: @min-element-spacing;
             cursor: pointer;
             // A mixin defining a navigation button element
@@ -134,11 +137,25 @@ a {
                 color: darken(@color, 10%);
             }
             img#logo {
-                @logo-small-height: 66px;
-                @logo-small-width: 101px;
                 margin-top: (@height - @logo-small-height) / 2;
                 height: @logo-small-height;
                 width: @logo-small-width;
+            }
+            img#logo-glow {
+                position: relative;
+                top: -(@logo-small-height + 4);
+                left: 0px;
+                height: @logo-small-height;
+                width: @logo-small-width;
+                -webkit-transition: all .3s;
+                -moz-transition: all .3s;
+                -ms-transition: all .3s;
+                -o-transition: all .3s;
+                transition: all .3s;
+                opacity: 0;
+                &:hover {
+                    opacity: 1;
+                }
             }
             #browse {
                 .nav-button(48px,
