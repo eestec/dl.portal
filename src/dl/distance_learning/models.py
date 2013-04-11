@@ -40,7 +40,8 @@ class VideoType(models.Model):
 
 class VideoManager(models.Manager):
     """
-    A custom Manager for the `Video` model.
+    A custom Manager for the `Video` model. Exposes convenience methods for
+    filtering Videos.
     """
     def all_approved(self):
         """
@@ -91,6 +92,8 @@ def validate_video_url(value):
             raise ValidationError(
                 'Invalid Youtube video URL - no video ID found')
 
+    # The dict maps sites' domain names to callables implementing validation
+    # logic.
     SITES_ALLOWED = {
         'youtube.com': youtube_validator,
     }
