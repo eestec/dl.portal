@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.models import fields_for_model
+from django.core.exceptions import ValidationError
 
 from django.db.models import Q
 
@@ -14,10 +15,63 @@ class VideoUploadForm(ModelForm):
         # The approved and active_broadcast flags are excluded from the form
         # shown to the user.
         # They default to False and only the admin can change them to True
+        # The upcoming and preview_image fields are also excluded since
+        # they are ignored for videos which are not considered upcoming.
         exclude = (
             'approved',
             'active_broadcast',
+            'upcoming',
+            'preview_image',
         )
+
+    def __init__(self, *args, **kwargs):
+        super(VideoUploadForm, self).__init__(*args, **kwargs)
+        self.fields['video_url'].required = True
+
+
+class UpcomingVideoUploadForm(ModelForm):
+    class Meta:
+        model = Video
+        exclude = (
+            'approved',
+            'active_broadcast',
+            'live_broadcast',
+            'upcoming',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(UpcomingVideoUploadForm, self).__init__(*args, **kwargs)
+        self.fields['video_url'].label = u'Link to a promotional video'
+
+    def clean(self):
+        """
+        A custom clean method to cross validate fields.
+        The form is valid only if at least one of video_url or
+        preview_image is set.
+        """
+        cleaned_data = super(UpcomingVideoUploadForm, self).clean()
+        # A promo video or a preview image must be set
+        video_url = cleaned_data.get('video_url')
+        preview_image = cleaned_data.get('preview_image')
+        if not (video_url or preview_image):
+            raise forms.ValidationError(
+                'A promotional video or a preview image must be set.')
+
+        return cleaned_data
+
+    def save(self,
+             force_insert=False, force_update=False, commit=True,
+             *args, **kwargs):
+        """
+        A custom save method for the form which sets field values specific for
+        UpcomingVideos.
+        """
+        v = super(UpcomingVideoUploadForm, self).save(commit=False, 
+                                                      *args, **kwargs)
+        v.upcoming = True
+        if commit:
+            v.save()
+        return v
 
 
 class CommentPostForm(ModelForm):

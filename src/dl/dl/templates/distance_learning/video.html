@@ -35,7 +35,11 @@
         </div>
     </div>
     <div id="video-embed-wrapper">
+        {% if video.embed_url %}
         <iframe width="600" height="450" src="{{ video.embed_url }}?wmode=transparent" frameborder="0" allowfullscreen></iframe>
+        {% else %}
+        <img src="{{ video.preview_image.url }}" alt="Preview image for {{ video.name }}" width="600">
+        {% endif %}
     </div>
     <div id="video-info">
         <div id="video-info-top-wrapper">

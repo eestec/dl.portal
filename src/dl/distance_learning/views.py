@@ -19,6 +19,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from distance_learning.models import Video, VideoSubject
 from distance_learning.forms import VideoUploadForm
+from distance_learning.forms import UpcomingVideoUploadForm
 from distance_learning.forms import VideoSearchForm
 from distance_learning.forms import CommentPostForm
 from distance_learning.utils import get_or_none
@@ -39,16 +40,17 @@ def index(request):
     A view for the index page.  It needs to fetch most popular
     content which is to be rendered in the template.
     """
-    # TODO: Get most popular videos
     videos = Video.objects.get_most_viewed(limit=5)
+    upcoming_videos = Video.objects.all_upcoming()[:5]
     return render_to_response('distance_learning/index.html',
-                              {'videos': videos},
+                              {'videos': videos,
+                               'upcoming_videos': upcoming_videos},
                               context_instance=RequestContext(request))
 
 
 @permission_required('distance_learning.add_video', raise_exception=True)
 @csrf_exempt
-def upload_video(request):
+def upload_video(request, video_type):
     """
     A view for uploading a new video to the website.
     """
@@ -61,18 +63,25 @@ def upload_video(request):
     # TODO: Maybe make a view decorator which adds the QuotaUploadHandler
     # thereby making the splitting of methods unnecessary.
     request.upload_handlers.insert(0, QuotaUploadHandler())
-    return _upload_video(request)
+    # Maps video types to forms for uploading that video type
+    video_types = {
+        'video': VideoUploadForm,
+        'upcoming': UpcomingVideoUploadForm,
+    }
+    return _upload_video(request, video_types.get(video_type, None))
 
 
 @csrf_protect
-def _upload_video(request):
+def _upload_video(request, UploadForm):
     """
     A private helper function for the upload_video view which checks for
     csrf since upload_view must not read any data before setting the
     UploadHandler
     """
+    if not UploadForm:
+        UploadForm = VideoUploadForm
     if request.method == 'POST':
-        form = VideoUploadForm(request.POST, request.FILES)
+        form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
             try:
                 # Do not commit!
@@ -93,7 +102,7 @@ def _upload_video(request):
     else:
         # TODO: Maybe populate the form with some defaults which can be
         # gathered from the user trying to upload the video (city, country)
-        form = VideoUploadForm()
+        form = UploadForm()
     return render_to_response(
         'distance_learning/upload.html',
         {'form': form},
@@ -322,7 +331,7 @@ def subcategory_search_json(request, category_name, subcategory_id):
 
     category = category_manager.get(pk=subcategory_id)
     page_number = request.GET.get('page', 1)
-    page = paginate_video_set(category.video_set.all(), page_number)
+    page = paginate_video_set(category.video_set.all_approved(), page_number)
 
     return render_to_json_response(_build_response(page))
 
@@ -378,7 +387,7 @@ def subcategory_search(request, category_name, subcategory_id):
     page_number = request.GET.get('page', 1)
 
     Category = namedtuple('Category', 'name active url')
-    page = paginate_video_set(category.video_set.all(), page_number)
+    page = paginate_video_set(category.video_set.all_approved(), page_number)
     if page is None:
         raise Http404
 

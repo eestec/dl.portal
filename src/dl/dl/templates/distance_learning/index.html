@@ -45,6 +45,12 @@
 </div>
 <div class="column">
     <div class="title selected" style="width: 100%">upcoming</div>
+    <div class="left radiobutton" style="visibility: hidden"></div><div class="clear"></div>
+    <div class="videos-column">
+{% for video in upcoming_videos %}
+    {% include "distance_learning/video-thumbnail.html" %}
+{% endfor %}
+    </div>
 </div>
 
 <div class="clear"></div>

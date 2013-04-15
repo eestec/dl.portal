@@ -47,7 +47,15 @@ class VideoManager(models.Manager):
         """
         Returns a QuerySet of approved videos.
         """
-        return super(VideoManager, self).get_query_set().filter(approved=True)
+        qs = super(VideoManager, self).get_query_set()
+        return qs.filter(approved=True).exclude(upcoming=True)
+
+    def all_upcoming(self):
+        """
+        Returns a QuerySet of upcoming videos.
+        """
+        qs = super(VideoManager, self).get_query_set()
+        return qs.filter(approved=True).exclude(upcoming=False)
 
     def all_active_broadcast(self):
         """
@@ -59,9 +67,13 @@ class VideoManager(models.Manager):
         """
         Returns videos sorted by the number of its hits.
         It should return `limit` results.
-        `limit` defaults to 3 results.
+        If a `limit` is not provided, all videos are returned.
         """
         videos = self.all_approved()
+        try:
+            limit = int(limit)
+        except:
+            limit = None
         if limit is not None:
             return sorted(videos, key=lambda v: v.views, reverse=True)[:limit]
         else:
@@ -120,11 +132,16 @@ class Video(models.Model):
     city = models.CharField(max_length=60)
     country = models.CharField(max_length=55)
     event = models.CharField(max_length=50)
-    description = models.TextField()
-    video_url = models.URLField(verbose_name="Video URL",
-                                validators=[validate_video_url, ])
-    live_broadcast = models.BooleanField(default=False)
     lecturer = models.CharField(max_length=60)
+    description = models.TextField()
+    preview_image = models.ImageField(
+        upload_to=lambda instance, filename: '/'.join((instance.name, 
+                                                       filename)),
+        blank=True)
+    video_url = models.URLField(verbose_name="Video URL",
+                                validators=[validate_video_url, ],
+                                blank=True)
+    live_broadcast = models.BooleanField(default=False)
     # TODO: Refactor the max_upload_sizes to some settings file constant
     handout = LimitedFileField(
         upload_to=lambda instance, filename: '/'.join([instance.name,
@@ -142,8 +159,10 @@ class Video(models.Model):
     keywords = CommaDelimitedTextField(max_length=150)
     subject = models.ManyToManyField(VideoSubject)
     user = models.ForeignKey(User, editable=False)
+    upcoming = models.BooleanField(default=False)
     active_broadcast = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
+
 
     _views = None
 
@@ -164,22 +183,6 @@ class Video(models.Model):
             self._views = hc.hits
         return self._views
 
-    def contains(self, term):
-        """
-        Temp. A method which checks whether a certain term appears as a part
-        of any field of the video.  For now it does not discern between words
-        and substrings.
-        """
-        term = term.lower()
-        return (term in self.name.lower() or
-                term in self.city.lower() or
-                term in self.country.lower() or
-                term in self.event.lower() or
-                term in self.description.lower() or
-                term in self.lecturer.lower() or
-                term in unicode(self.video_type).lower() or
-                term in unicode(self.keywords).lower())
-
     def __unicode__(self):
         return u'%s, %s' % (self.name, self.city)
 
@@ -194,6 +197,8 @@ class Video(models.Model):
         Assumes that the videos are only youtube videos (not other providers).
         For that to work, this function would need to be updated.
         """
+        if self.upcoming and not self.video_url:
+            return None
         YOUTUBE_EMBED_URL_PATTERN = (
             'http://www.youtube.com/embed/%(video_id)s')
         query_string = urlparse.urlparse(self.video_url).query
@@ -211,6 +216,8 @@ class Video(models.Model):
         The generated HTML is marked safe so as to avoid having templates
         escape it.
         """
+        if self.upcoming and not self.video_url:
+            return None
         # So far only youtube videos are supported -- would need some
         # refactoring if it's decided to use different providers.
         YOUTUBE_VIDEO_EMBED_HTML_PATTERN = (

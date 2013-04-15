@@ -2,6 +2,10 @@
     <div class="video">
         <div class="video-title"><a href="{{ video.get_absolute_url }}">{{ video.name }}</a></div>
         <div class="video-description">Submitted by <span class="submitter">{{ video.user.userprofile.member.cast }} </span> (viewed: {{ video.views }} times)</div>
+        {% if video.embed_html %}
         {{ video.embed_html }}
+        {% else %}
+        <img src="{{ video.preview_image.url }}" alt="Preview image for {{ video.name }}" width="420">
+        {% endif %}
     </div>
 {% endspaceless %}

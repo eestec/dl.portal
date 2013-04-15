@@ -26,11 +26,13 @@ class VideoAdmin(admin.ModelAdmin):
             'approved',
             'live_broadcast',
             'active_broadcast',
+            'upcoming',
     )
     list_filter = (
             'date_uploaded',
             'approved',
             'live_broadcast',
+            'upcoming',
     )
 
     def save_model(self, request, obj, form, change):
