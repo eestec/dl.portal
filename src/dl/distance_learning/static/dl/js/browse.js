@@ -159,8 +159,8 @@ $(function() {
     $('.sec-nav-item a, .scroller-option a').click(clickHandler);
 
     // Do work
-    centerElements();
     adjustScroller();
+    setTimeout(centerElements, 25);
 });
 
 /**

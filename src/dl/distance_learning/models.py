@@ -47,14 +47,14 @@ class VideoManager(models.Manager):
         """
         Returns a QuerySet of approved videos.
         """
-        qs = super(VideoManager, self).get_query_set()
+        qs = self.get_query_set()
         return qs.filter(approved=True).exclude(upcoming=True)
 
     def all_upcoming(self):
         """
         Returns a QuerySet of upcoming videos.
         """
-        qs = super(VideoManager, self).get_query_set()
+        qs = self.get_query_set()
         return qs.filter(approved=True).exclude(upcoming=False)
 
     def all_active_broadcast(self):
@@ -239,6 +239,9 @@ class Video(models.Model):
             'embed_url': self.embed_url(),
             'user': unicode(self.user.userprofile.member.cast()),
             'views': self.views,
+            'preview_image': (self.preview_image.url
+                              if self.preview_image else
+                              None),
         }
 
     def video_age(self):

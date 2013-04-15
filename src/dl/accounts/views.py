@@ -291,8 +291,9 @@ def get_watch_later(request, page_number):
 def get_uploaded(request, page_number):
     if request.method != "GET":
         return HttpResponseBadRequest()
-    page = _paginate_video_set(request.user.video_set.all(),
-                               page_number)
+    page = _paginate_video_set(
+        request.user.video_set.all().filter(approved=True),
+        page_number)
     if request.is_ajax():
         return HttpResponse(
             _build_response(page),
