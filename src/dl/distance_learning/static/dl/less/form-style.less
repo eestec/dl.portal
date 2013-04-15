@@ -11,6 +11,7 @@
 .field {
     @field-width: 200px;
     margin-bottom: 20px;
+    clear: both;
     .label {
         min-width: @field-width;
         font-weight: bold;
@@ -56,11 +57,10 @@ input[type="color"],
   padding: 4px 6px;
   color: #555555;
   /*.border-radius;*/
-  border-color: @border-color;
   vertical-align: middle;
 }
 input[type="submit"] {
-    /*.border-radius(7px);*/
+    .border-radius(7px);
     color: white;
     background: @eestec-red;
     font-size: 14px;
@@ -97,11 +97,17 @@ input[type="checkbox"] {
   margin: 4px 0 0;
   *margin-top: 0;
   /* IE7 */
-
   margin-top: 1px \9;
   /* IE8-9 */
-
   line-height: normal;
+}
+
+input[type="submit"] {
+    border: none;
+    background: url("@{img-path}/submit-button-no-text.png") no-repeat center;
+    &:hover {
+        background: url("@{img-path}/submit-button-no-text-hover.png") no-repeat center;
+    }
 }
 
 #video-upload-form {

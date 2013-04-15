@@ -22,6 +22,8 @@
 <meta property="og:title" content="EESTEC DL Video {{ video.pk }}">
 {% endblock %}
 
+{% block tab-title %}Video {{ video.pk }} | {{ block.super }}{% endblock %}
+
 {% block main_content %}
 {% spaceless %}
 <div class="video-large">

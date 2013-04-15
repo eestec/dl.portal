@@ -1,5 +1,6 @@
 {% extends 'distance_learning/base.html' %}
 {% load url from future %}
+{% load staticfiles %}
 
 {% block extra-js %}
 <script>$(function(){$('form #id_username').focus();});</script>
@@ -31,10 +32,10 @@
     </div>
     <div class="clear"></div>
 
-    <div id="social" style="display: inline-block;">
-        <div class="left">Or sign in with</div>
-        <a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}"><div id="google-button" class="left"></div></a>
-        <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}"><div id="facebook-button" class="left"></div></a>
+    <div id="social">
+        <a class="zocial googleplus" href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}">Sign in with Google</a>
+        &nbsp;&nbsp;
+        <a class="zocial facebook" href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}">Sign in with Facebook</a>
     </div>
 </div>
 {% endblock %}

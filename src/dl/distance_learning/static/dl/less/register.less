@@ -7,29 +7,8 @@
 @facebook-height: 63px;
 
 #social {
-    div {
-        margin-top: (@option-height - 16) / 2;
-    }
-    // Google + Facebook + margins + text length
-    width: @google-width + @facebook-width + 190px;
-    font-size: 16px;
-    font-style: italic;
-    // Social button mixin
-    .social-button(@button-width, @button-height, @img-url) {
-        width: @button-width;
-        height: @button-height;
-        margin-top: (@option-height - @button-height) / 2;
-        margin-left: 15px;
-        background: url("@{img-path}/@{img-url}") no-repeat;
-        cursor: pointer;
-    }
-    #google-button {
-        .social-button(@google-width, @google-height, "google-button.png");
-    }
-    #facebook-button {
-        .social-button(@facebook-width,
-                       @facebook-height,
-                       "facebook-button.png");
+    a {
+        font-size: 13px;
     }
 }
 
@@ -43,7 +22,6 @@
     margin-top: 120px;
     padding-top: 100px;
     background: url("@{img-path}/sign-up-menu.png") no-repeat;
-    z-index: 5000;
     .option {
         .center;
         height: @option-height;
@@ -85,12 +63,6 @@
                     "company-button.png",
                     "company-button-hover.png");
         }
-    }
-
-    // A more specific #social so that the .option does not dominate as the
-    // more specific selector and causes the social part to get its width
-    #social {
-        width: @google-width + @facebook-width + 190px;
     }
 
 }

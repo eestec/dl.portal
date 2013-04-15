@@ -12,6 +12,7 @@
         {% block extra-js %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="{% static "dl/css/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "dl/css/base.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'dl/css/zocial.css' %}">
         {% block extra-css %}{% endblock %}
         {% block extra-head %}{% endblock %}
         <title>{% block tab-title %}EESTEC Distance Learning Portal{% endblock %}</title>
@@ -65,11 +66,9 @@
                 <div class="option"><a href="{% url 'register-student' %}"><div id="individual-option"></div></a></div>
                 <div class="option"><a href="{% url 'register-university' %}"><div id="university-option"></div></a></div>
                 <div class="option"><a href="{% url 'register-company' %}"><div id="company-option"></div></a></div>
-                <div class="option" id="social">
-                    <div class="left">Or sign up with</div>
-                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}"><div id="google-button" class="left"></div></a>
-                    <a href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}"><div id="facebook-button" class="left"></div></a>
-                </div>
+                <a class="zocial googleplus" href="{% url 'socialauth_begin' 'google-oauth2' %}?next={{ request.path }}">Sign in with Google</a>
+                &nbsp;&nbsp;
+                <a class="zocial facebook" href="{% url 'socialauth_begin' 'facebook' %}?next={{ request.path }}">Sign in with Facebook</a>
             </div>
         </div>
     {% endblock %}
