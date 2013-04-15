@@ -65,12 +65,12 @@ a {
     margin: 0px auto;
 }
 
+@top-bar-height: 85px;
 #top-bar {
     @first-gradient-color: #ffffff;
     @second-gradient-color: #b3b3b3;
     @width: 100%;
-    @height: 85px;
-    border-bottom: solid 2px @eestec-red;
+    @height: @top-bar-height;
 
     background-image: linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
     background-image: -o-linear-gradient(top, @first-gradient-color 0%, @second-gradient-color 100%);
@@ -87,6 +87,8 @@ a {
     
     width: @width;
     height: @height;
+
+    opacity: 0.95;
 
     #main-nav-bar {
         // Variable declarations
@@ -199,21 +201,21 @@ a {
     width: 100%;
     height: @banner-height;
     background: url("@{img-path}/banner-large.png") no-repeat center;
+    margin-top: -@top-bar-height;
     @logo-height: 192px;
     @logo-width: 731px;
-    border-bottom: solid 2px @eestec-red;
     #dl-logo-large {
         width: @logo-width;
         height: @logo-height;
-        padding-top: @banner-height / 4;
+        padding-top: @banner-height / 3.5;
         display: block;
     }
 }
 #banner-small {
-    @banner-height: 90px;
+    @banner-height: 160px;
     height: @banner-height;
+    margin-top: -@top-bar-height;
     background: url("@{img-path}/banner-small.png") no-repeat center;
-    border-bottom: solid 2px @eestec-red;
     width: 100%;
 }
 #search-form-wrapper {
@@ -221,7 +223,7 @@ a {
     @element-height: 40px;
     @button-width: 89px;
     @button-height: 64px;
-    padding-top: 15px;
+    padding-top: @top-bar-height + 8px;
     width: @width;
     padding-left: 10px;
     .center;
@@ -253,6 +255,9 @@ a {
         background: url("@{img-path}/search-go-hover.png") no-repeat;
         cursor: pointer;
     }
+}
+#banner-large #search-form-wrapper {
+    padding-top: 15px;
 }
 
 #content {
