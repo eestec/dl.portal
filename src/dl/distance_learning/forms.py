@@ -1,7 +1,9 @@
+from __future__ import division
 from django import forms
 from django.forms import ModelForm
 from django.forms.models import fields_for_model
 from django.core.exceptions import ValidationError
+from django.core.files.images import get_image_dimensions
 
 from django.db.models import Q
 
@@ -42,6 +44,20 @@ class UpcomingVideoUploadForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UpcomingVideoUploadForm, self).__init__(*args, **kwargs)
         self.fields['video_url'].label = u'Link to a promotional video'
+
+    def clean_preview_image(self):
+        """
+        A custom field validator ensuring the aspect ratio of the uploaded
+        image is 4:3.
+        """
+        preview_image = self.cleaned_data['preview_image']
+        if preview_image:
+            width, height = get_image_dimensions(preview_image)
+            aspect_ratio = width / height
+            if aspect_ratio != 4 / 3:
+                raise forms.ValidationError(
+                    u'The aspect ratio of the image needs to be 4:3.')
+        return preview_image
 
     def clean(self):
         """
