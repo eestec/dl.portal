@@ -48,7 +48,7 @@ class VideoManager(models.Manager):
         Returns a QuerySet of approved videos.
         """
         qs = self.get_query_set()
-        return qs.filter(approved=True).exclude(upcoming=True)
+        return qs.filter(approved=True)
 
     def all_upcoming(self):
         """
