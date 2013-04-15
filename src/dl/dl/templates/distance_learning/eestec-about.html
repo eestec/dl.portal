@@ -1,12 +1,8 @@
-{% extends "distance_learning/base.html" %}
-{% load staticfiles %}
-{% load url from future %}
+{% extends 'distance_learning/about.html' %}
+{% block about-selected %}{% endblock %}
+{% block eestec-selected %}selected{% endblock %}
 
-{% block tab-title %}{{ block.super }} | FAQ{% endblock %}
-
-{% block main_content %}
-<div class="text-title">EESTEC</div>
-<div class="text">
+{% block about-text %}
     <p><strong>Electrical Engineering Students' European Association</strong> is an apolitical, non-governmental and non-profit organization which targets and trains through it's activities students from electrical profile Universities, Institutes and Technical Schools in Europe. The association was founded in The Netherlands, in 1986. Nowadays, EESTEC is present in 28 countries and 53 universities across Europe with over 6000 members of whom 3000 are currently active, and indirectly, EESTEC is addressing all students in the faculties that EESTEC exists.</p>
     <p>EESTEC's main goal is to promote, establish and develop international contacts and an exchange of ideas between students in electrical profile faculties. The activity of this organization relies on the skills, enthusiasm, openness and will of involvement of its members, also pursuing their professional development, the improvement of their technical knowledge and reaching their full potential. Moreover, students from all Europe meet and respect their differences and their cultures, and this empowered variety results in a friendly international environmet and creates awareness for a common European identity.</p>
     <p>Our <strong>vision</strong> lies in uniting electrical engineering and computer science students all over Europe in order to reach their full potential in academic and social life.</p>
@@ -62,7 +58,4 @@
         <li>And we are ready to develop ourselves in our field as well as serving the multi-cultural structure and common identity of Europe...We are EESTEC !</li>
     </ul>
     <p>For more information about EESTEC you can visit our website at <a href="http://eestec.net" target="_blank">eestec.net</a>.</p>
-</div>
-<div class="clear"></div>
 {% endblock %}
-

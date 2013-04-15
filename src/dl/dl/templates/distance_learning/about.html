@@ -5,8 +5,20 @@
 {% block tab-title %}{{ block.super }} | About{% endblock %}
 
 {% block main_content %}
-<div class="text-title">About</div>
+    <div class="sec-nav">
+        <div class="sec-nav-items" style="margin-left: 360px">
+            <div class="sec-nav-item {% block about-selected %}selected{% endblock %}"><a href="{% url 'dl-about' %}">ABOUT</a></div>
+            <div class="sec-nav-item {% block eestec-selected %}{% endblock %}"><a href="{% url 'dl-about-eestec' %}">EESTEC</a></div>
+            <div class="sec-nav-item {% block faq-selected %}{% endblock %}"><a href="{% url 'dl-about-faq' %}">FAQ</a></div>
+            <div class="sec-nav-item {% block contact-selected %}{% endblock %}"><a href="{% url 'dl-about-contact' %}">CONTACT</a></div>
+            <div class="sec-nav-item {% block report-selected %}{% endblock %}"><a href="{% url 'dl-about-report' %}">REPORT BUG</a></div>
+        </div>
+        <div class="clear"></div>
+        <div class="sec-nav-line"></div>
+    </div>
+    <div class="wrapper">
 <div class="text">
+{% block about-text %}
 <p>Distance Learning is an online learning platform aiming to spread the knowledge that exists within EESTEC and its academic or industrial partners.</p>
 
 <p>The essence of Distance Learning is summarized in the following motto: <strong>“connect.play.learn”</strong>; because everything around it is as simple as that. Connect to <a href="http://dl.eestec.net/">http://dl.eestec.net/</a>, press the play button, learn about a scientific field of your interest.</p>
@@ -16,7 +28,8 @@
 <p>In order to achieve that, Distance Learning is offering recorded material from all the academic activities within EESTEC (e.g. lectures from international workshops, soft skills trainings etc) and online courses from distinguished professors and experts of the labor market. Live streaming service is often provided as well.</p>
 
 <p>No matter who you are, where you are or when you are available, knowledge will be there, waiting for you.</p>
+{% endblock %}
 </div>
 <div class="clear"></div>
+</div>
 {% endblock %}
-

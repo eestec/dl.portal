@@ -146,12 +146,21 @@ urlpatterns += patterns('',
     url(r'^about/$',
         TemplateView.as_view(template_name="distance_learning/about.html"),
         name="dl-about"),
-    url(r'^faq/$',
-        TemplateView.as_view(template_name="distance_learning/faq.html"),
-        name="dl-faq"),
-    url(r'^eestec/$',
-        TemplateView.as_view(template_name="distance_learning/eestec.html"),
-        name="dl-eestec"),
+    url(r'^about/faq/$',
+        TemplateView.as_view(template_name='distance_learning/faq-about.html'),
+        name='dl-about-faq'),
+    url(r'^about/eestec/$',
+        TemplateView.as_view(
+            template_name='distance_learning/eestec-about.html'),
+        name='dl-about-eestec'),
+    url(r'^about/contact/$',
+        TemplateView.as_view(
+            template_name='distance_learning/contact-about.html'),
+        name='dl-about-contact'),
+    url(r'^about/report/$',
+        TemplateView.as_view(
+            template_name='distance_learning/report-about.html'),
+        name='dl-about-report'),
 )
 
 # contrib.admin patterns

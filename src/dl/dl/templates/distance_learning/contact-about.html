@@ -1,0 +1,33 @@
+{% extends 'distance_learning/about.html' %}
+{% load url from future %}
+{% block about-selected %}{% endblock %}
+{% block contact-selected %}selected{% endblock %}
+
+{% block about-text %}
+    <div class="column">
+        <div class="videos-column">
+            <div class='text-title'>General Inquiries &amp; Feedback</div>
+            <div class="text">
+                <p>If you have any kind of questions, feedback, suggestions, or any other issues about Distance learning, don’t hesitate to contact us at <a href="mailto:dl.info@eestec.net" target="_blank">dl.info@eestec.net</a>. To see if your question has already been answered, you could visit our <a href="{% url 'dl-about-faq' %}">FAQ page</a>.</p>
+                <p>You can contact EESTEC at the address below:</p>
+                <p>Electrical Engineering STudents' European assoCiation<br>Mekelweg 4,<br>2628 CD Delft,<br>The Netherlands</p>
+                <p>You could also find us on social networks:<br><br>
+                <a class="zocial icon facebook" href="http://www.facebook.com/" target="_blank"></a>&nbsp;
+                <a class="zocial icon googleplus" href="http://plus.google.com/" target="_blank"></a>&nbsp;
+                <a class="zocial icon twitter" href="http://www.twitter.com/" target="_blank"></a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="videos-column">
+            <div class='text-title'>Universities &amp; Companies</div>
+            <div class="text">
+                <p>If you are representing a company or a university and you have any question regarding Distance Learning or you would like to declare your interest for future collaboration, please email <a href="mailto:dl.uni@eestec.net" target="_blank">dl.uni@eestec.net</a> or <a href="mailto:dl.company@eestec.net" target="_blank">dl.company@eestec.net</a> respectively.</p>
+                <p>For a brief overview of the benefits that could bring the collaboration of your university or company with Distance Learning, you could visit our <a href="{% url 'dl-about-faq' %}">FAQ page</a>.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="clear"></div>
+{% endblock %}

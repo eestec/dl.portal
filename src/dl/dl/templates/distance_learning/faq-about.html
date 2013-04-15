@@ -1,12 +1,8 @@
-{% extends "distance_learning/base.html" %}
-{% load staticfiles %}
-{% load url from future %}
+{% extends 'distance_learning/about.html' %}
+{% block about-selected %}{% endblock %}
+{% block faq-selected %}selected{% endblock %}
 
-{% block tab-title %}{{ block.super }} | FAQ{% endblock %}
-
-{% block main_content %}
-<div class="text-title">FAQ</div>
-<div class="text">
+{% block about-text %}
     <ol id="faq">
         <li>What is Distance Learning?</li>
 
@@ -80,7 +76,4 @@
                 <p>Distance Learning cannot be compared to other online education platforms that offer university level courses, because this is not the primary objective of DL. Distance Learning’s main goal is to enrich education with additional dimensions, covering advanced technological subjects of high interest and bridging the gap between universities and the labor market.</p>
             </div>
     </ol>
-</div>
-<div class="clear"></div>
 {% endblock %}
-
