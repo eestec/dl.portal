@@ -1,0 +1,17 @@
+{% spaceless %}
+<form id="video-upload-form" enctype="multipart/form-data" action="" method="POST">{% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+    <div class="field">
+        <div class="label">{{ field.label_tag }}</div>
+        <div class="input">{{ field }}</div>
+        <div class="clear"></div>
+        <span class="helptext">{{ field.help_text }}</span>
+    {% if field.errors %}
+        <div class="errors">{{ field.errors }}</div>
+    {% endif %}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
+{% endspaceless %}

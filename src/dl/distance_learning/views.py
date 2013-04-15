@@ -5,6 +5,7 @@ from collections import namedtuple
 from django.template import RequestContext
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import permission_required, login_required
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
@@ -41,7 +42,10 @@ def index(request):
     content which is to be rendered in the template.
     """
     videos = Video.objects.get_most_viewed(limit=5)
-    upcoming_videos = Video.objects.all_upcoming()[:5]
+    # Show the latest 5 upcoming videos sorted by their view numbers
+    upcoming_videos = sorted(
+        Video.objects.all_upcoming().order_by('-date_uploaded')[:5],
+        key=lambda v: -v.views)
     return render_to_response('distance_learning/index.html',
                               {'videos': videos,
                                'upcoming_videos': upcoming_videos},
@@ -69,6 +73,52 @@ def upload_video(request, video_type):
         'upcoming': UpcomingVideoUploadForm,
     }
     return _upload_video(request, video_types.get(video_type, None))
+
+
+@permission_required('distance_learning.change_video', raise_exception=True)
+@csrf_exempt
+def update_video(request, video_id, video_type=None):
+    """
+    A view allowing the users to update existing videos.
+    A user needs the change_video permission in order to update any videos.
+    A user can only update videos which he has uploaded himself.
+    """
+    request.upload_handlers.insert(0, QuotaUploadHandler())
+    # Delegate to a private function which is csrf_protected
+    return _update_video(request, video_id, video_type)
+
+
+@csrf_protect
+def _update_video(request, video_id, video_type):
+    """
+    A private function implementing the functionality of updating
+    an existing video.
+    """
+    video_id = int(video_id)
+    video = get_object_or_404(Video, pk=video_id)
+    # The user can only update hisown videos
+    if video.user != request.user:
+        return HttpResponseForbidden()
+
+    form_types = {
+        'existing': VideoUploadForm,
+        'upcoming': UpcomingVideoUploadForm,
+    }
+    if not video_type:
+        video_type = 'upcoming' if video.upcoming else 'existing'
+    UploadForm = form_types.get(video_type, VideoUploadForm)
+
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES, instance=video)
+        if form.is_valid():
+            form.save()
+            return redirect('distance_learning.views.index')
+    else:
+        form = UploadForm(instance=video)
+
+    return render(request, 'distance_learning/update_video.html', {
+        'form': form,
+    })
 
 
 @csrf_protect

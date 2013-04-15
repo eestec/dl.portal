@@ -4,8 +4,8 @@
 {% block main_content %}
     <div class="sec-nav">
         <div class="sec-nav-items" style="margin-left: 420px">
-            <div class="sec-nav-item {% if not form.preview_image %}selected{% endif%}"><a href="{% url 'dl-video-upload' %}">EXISTING VIDEO</a></div>
-            <div class="sec-nav-item {% if form.preview_image %}selected{% endif%}"><a href="{% url 'dl-video-upcoming-upload' %}">UPCOMING VIDEO</a></div>
+            <div class="sec-nav-item {% if not form.preview_image %}selected{% endif%}"><a href="{% url 'dl-video-update-existing' form.instance.pk %}">EXISTING VIDEO</a></div>
+            <div class="sec-nav-item {% if form.preview_image %}selected{% endif%}"><a href="{% url 'dl-video-update-upcoming' form.instance.pk %}">UPCOMING VIDEO</a></div>
         </div>
         <div class="clear"></div>
         <div class="sec-nav-line"></div>
@@ -16,3 +16,4 @@
 </div>
 </div>
 {% endblock %}
+

@@ -70,6 +70,9 @@
                 {% endfor %}
             </div>
             <div class="video-buttons">
+                {% if video.user == request.user %}
+                    <span><a href="{% url 'dl-video-update' video.pk %}">update</a></span>
+                {% endif %}
                 {% if video.presentation %}
                     <span><a href="{{ video.presentation.url }}">presentation</a></span>
                 {% endif %}

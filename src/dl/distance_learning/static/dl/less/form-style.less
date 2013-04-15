@@ -10,7 +10,6 @@
 
 .field {
     @field-width: 200px;
-    overflow: auto;
     margin-bottom: 20px;
     .label {
         min-width: @field-width;
@@ -30,6 +29,9 @@
             li {
             }
         }
+    }
+    .helptext {
+        font-style: italic;
     }
 }
 
@@ -109,4 +111,8 @@ input[type="checkbox"] {
     textarea {
         width: 432px;
     }
+}
+
+ul.errorlist {
+    color: red;
 }

@@ -30,6 +30,15 @@ class VideoUploadForm(ModelForm):
         super(VideoUploadForm, self).__init__(*args, **kwargs)
         self.fields['video_url'].required = True
 
+    def save(self,
+             force_insert=False, force_update=False, commit=True,
+             *args, **kwargs):
+        v = super(VideoUploadForm, self).save(commit=False)
+        v.upcoming = False
+        if commit:
+            v.save()
+        return v
+
 
 class UpcomingVideoUploadForm(ModelForm):
     class Meta:
@@ -44,6 +53,9 @@ class UpcomingVideoUploadForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UpcomingVideoUploadForm, self).__init__(*args, **kwargs)
         self.fields['video_url'].label = u'Link to a promotional video'
+        self.fields['preview_image'].help_text = (
+            u'Aspect ratio of the image needs to be 4:3'
+        )
 
     def clean_preview_image(self):
         """
