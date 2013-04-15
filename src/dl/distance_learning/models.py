@@ -242,6 +242,8 @@ class Video(models.Model):
             'preview_image': (self.preview_image.url
                               if self.preview_image else
                               None),
+            'upcoming': self.upcoming,
+            'description': self.description,
         }
 
     def video_age(self):

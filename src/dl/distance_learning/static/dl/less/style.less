@@ -422,6 +422,40 @@ a {
     width: @video-width;
 }
 
+.upcoming-video {
+    overflow: hidden;
+    .video-header {
+        z-index: 2;
+        position: relative;
+        background: rgba(255, 255, 255, 0.85);
+    }
+    .upcoming-video-wrapper {
+        z-index: 1;
+        height: 315px;
+        -webkit-transition: all .3s ease;
+        -moz-transition: all .3s ease;
+        -ms-transition: all .3s ease;
+        -o-transition: all .3s ease;
+        transition: all .3s ease;
+        position: relative;
+        @hover-offset: 200px;
+        &:hover {
+            top: -@hover-offset;
+        }
+        .long-description {
+            max-height: @hover-offset;
+            width: 410px;
+            padding-right: 10px;
+            text-align: justify;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 12;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
 .video {
     clear: both;
     margin-top: 15px;
@@ -553,7 +587,6 @@ a {
         background: url("@{img-path}/arrow2.png") no-repeat center;
     }
 }
-
 
 
 @import "register.less";
