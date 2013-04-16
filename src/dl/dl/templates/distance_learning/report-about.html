@@ -3,7 +3,7 @@
 {% block report-selected %}selected{% endblock %}
 
 {% block about-text %}
-If you have encountered any problem using this Web site, please report it to us by filling out this form. We are sorry for any inconvenience you may have incurred and hope to reduce such situations in the future.
+We are always seeking feedback to improve our services. If you are facing any general technical issues with our platform or you have experienced a bug, please fill the following form.<br>
 <form id="form-bugreport-upload" action="" method="POST">{% csrf_token %}
     {{ form.non_field_errors }}
     {% for field in form %}
