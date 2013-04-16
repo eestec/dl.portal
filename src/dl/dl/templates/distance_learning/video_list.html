@@ -49,7 +49,7 @@
 {% if videos %}
     <div class="videos-column">
     {% for video in videos.object_list|slice:"3:" %}
-        {% include 'distance_learning/video-thumbnail.html %}
+        {% include 'distance_learning/video-thumbnail.html' %}
     {% endfor %}
     </div>
 {% else %}
