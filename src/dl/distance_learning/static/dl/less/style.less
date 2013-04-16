@@ -111,7 +111,7 @@ a {
         .main-nav-bar-item {
             float: left;
             height: @height;
-            width: @logo-small-width;
+            max-width: @logo-small-width;
             margin-right: @min-element-spacing;
             cursor: pointer;
             // A mixin defining a navigation button element
@@ -164,6 +164,12 @@ a {
                             118px,
                             "browse-button.png",
                             "browse-button-hover.png");
+            }
+            #live {
+                .nav-button(48px,
+                            81px,
+                            "live-button.png",
+                            "live-button-hover.png");
             }
             #upload {
                 .nav-button(48px,

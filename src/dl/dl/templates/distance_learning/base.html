@@ -35,12 +35,18 @@
                     <a href="{% url 'dl-video-upload' %}"><div id="upload"></div></a>
                 </div>
         {% endif %}
+                <div class="main-nav-bar-item">
+                    <a href="{% url 'dl-live' %}"><div id="live"></div></a>
+                </div>
                 <div class="nav-right-side">
                     <div class="main-nav-bar-item">
                         <a href="{% url 'dl-about' %}"><div class="nav-inner">ABOUT</div></a>
                     </div>
                     <div class="main-nav-bar-item">
-                        <a href="{% url 'dl-live' %}"><div class="nav-inner bold">LIVE!</div></a>
+                        <a href="{% url 'dl-about-contact' %}"><div class="nav-inner">CONTACT</div></a>
+                    </div>
+                    <div class="main-nav-bar-item">
+                        <a href="{% url 'dl-about-faq' %}"><div class="nav-inner">FAQ</div></a>
                     </div>
 		{% if not user.is_authenticated %}
                     <div class="main-nav-bar-item">
