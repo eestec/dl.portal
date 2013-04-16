@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.core.urlresolvers import reverse
 from hitcount.views import update_hit_count_ajax
 
 # Uncomment the next two lines to enable the admin:
@@ -70,6 +71,7 @@ urlpatterns += patterns('',
 # Distance learning mappings
 # TODO: Move to a distance_learning/urls file
 from django.views.generic import TemplateView
+from contact.views import BugReportCreate
 urlpatterns += patterns('',
     url(r'^$',
         'distance_learning.views.index',
@@ -157,9 +159,13 @@ urlpatterns += patterns('',
         TemplateView.as_view(
             template_name='distance_learning/contact-about.html'),
         name='dl-about-contact'),
-    url(r'^about/report/$',
+    url(r'^success/report/$',
         TemplateView.as_view(
-            template_name='distance_learning/report-about.html'),
+            template_name='distance_learning/success-report.html'),
+        name='dl-report-success'),
+    url(r'^about/report/$',
+        BugReportCreate.as_view(
+            success_url='/success/report/'),
         name='dl-about-report'),
 )
 

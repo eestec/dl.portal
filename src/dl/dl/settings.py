@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'social_auth',
     'hitcount',
     'emailconfirmation',
+    'contact',
 )
 
 # Points to a model class to be used as a user profile class

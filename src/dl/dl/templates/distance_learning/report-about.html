@@ -4,4 +4,19 @@
 
 {% block about-text %}
 If you have encountered any problem using this Web site, please report it to us by filling out this form. We are sorry for any inconvenience you may have incurred and hope to reduce such situations in the future.
+<form id="form-bugreport-upload" action="" method="POST">{% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+    <div class="field">
+        <div class="label">{{ field.label_tag }}</div>
+        <div class="input">{{ field }}</div>
+        <div class="clear"></div>
+        <span class="helptext">{{ field.help_text }}</span>
+    {% if field.errors %}
+        <div class="errors">{{ field.errors }}</div>
+    {% endif %}
+    </div>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
 {% endblock %}

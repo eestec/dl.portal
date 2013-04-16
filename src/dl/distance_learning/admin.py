@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 
-
 from distance_learning.models import Video
 from distance_learning.models import VideoType
 from distance_learning.models import VideoSubject
+
 
 class AdminVideoUploadForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -15,6 +15,7 @@ class AdminVideoUploadForm(ModelForm):
 
     class Meta:
         model = Video
+
 
 class VideoAdmin(admin.ModelAdmin):
     form = AdminVideoUploadForm
@@ -44,6 +45,7 @@ class VideoAdmin(admin.ModelAdmin):
         if not change:
             obj.user = request.user
         obj.save()
+
 
 admin.site.register(Video, VideoAdmin)
 # Allow the admin to add subjects and types...
