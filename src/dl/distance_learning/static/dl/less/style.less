@@ -106,15 +106,18 @@ a {
         .nav-right-side {
             float: right;
             height: 100%;
+            .main-nav-bar-item {
+                margin-right: 15px;
+            }
         }
         @logo-small-height: 62px;
         @logo-small-width: 100px;
         .main-nav-bar-item {
             float: left;
             height: @height;
-            max-width: @logo-small-width;
-            margin-right: @min-element-spacing;
+            max-width: 118px;
             cursor: pointer;
+            margin-right: 1px;
             // A mixin defining a navigation button element
             // It is always vertically centered (statically calculated top
             // margin) and has a hover effect.
