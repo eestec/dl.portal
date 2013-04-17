@@ -11,7 +11,7 @@
 {% block banner %}
 {% spaceless %}
         <div id="banner-large">
-            <img src="{% static "dl/images/full-logo-banner.png" %}" alt="Distance Learning Logo" id="dl-logo-large" class="center">
+            <div id="dl-logo-large" class="center"><img src="{% static "dl/images/full-logo-banner.png" %}" alt="Distance Learning Logo" class="center"></div>
             <div id="search-form-wrapper">
                 <form id="search-form" action="{% url 'dl-video-search' %}" method="get">
                     <input type="text" id="search-input" name="q" placeholder="Search for your video here...">
