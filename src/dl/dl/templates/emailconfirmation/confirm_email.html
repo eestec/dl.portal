@@ -3,11 +3,13 @@
 {% block title %}{{ block.super }} | Confirm Email{% endblock %}
 
 {% block main_content %}
+<div class="text" style="text-align: center; text-size: 16px;">
 {% if email_address %}
     <p>You have confirmed that {{ email_address.email }} is an email address for user '{{ email_address.user }}'.</p>
 {% else %}
     <p>Invalid confirmation key.</p>
 {% endif %}
 <p>Go to <a href="/">homepage</a>.</p>
+</div>
 {% endblock %}
 
