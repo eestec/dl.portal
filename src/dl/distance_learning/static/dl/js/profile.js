@@ -151,12 +151,21 @@ $(function() {
                 $this.attr('action'), $this.serialize(),
                 function(data) {
                     $('.errors').remove();
+                    $('.messages').remove();
                     if (data.status === 'ok') {
                         $('#main-content').prepend(
                             $('<div class="messages"></div>').html(data.message));
                     }
                     if (data.status === 'validation failed') {
                         $.each(data.errors, function(key, value) {
+                            if (key === '__all__') {
+                                $.each(value, function(i, error) {
+                                    $('#main-content').prepend(
+                                        '<div class="messages">' +
+                                        error +
+                                        '</div>');
+                                });
+                            }
                             $('input[name="' + key + '"]').parent().after(
                                 _.template(errorListTemplate,
                                            {errors: value}));

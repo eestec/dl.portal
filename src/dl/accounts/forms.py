@@ -22,6 +22,7 @@ class MemberForm(ModelForm):
     """
     username = django.forms.CharField()
     password = django.forms.CharField(widget=django.forms.PasswordInput)
+    repeat_password = django.forms.CharField(widget=django.forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
         """
@@ -40,6 +41,7 @@ class MemberForm(ModelForm):
             self.fields['email'].widget.attrs['readonly'] = True
             # The user may choose not to change the password
             self.fields['password'].required = False
+            self.fields['repeat_password'].required = False
 
     def clean_username(self):
         """
@@ -68,19 +70,30 @@ class MemberForm(ModelForm):
         else:
             return self.cleaned_data['email']
 
-    def clean_password(self):
+    def clean(self):
         """
-        A method for custom clean operations on the password field.
+        A method for custom clean operations.
+        Cross validates the password and repeat_password fields to make sure
+        they match.
         """
-        value = self.cleaned_data['password']
+        cleaned_data = super(MemberForm, self).clean()
+        password = cleaned_data.get('password', None)
+        repeat_password = cleaned_data.get('repeat_password', None)
         instance = getattr(self, 'instance', None)
         if instance and instance.id:
-            if value == '':
-                # Use the old password
-                return instance.password
-        return value
+            if not password:
+                if repeat_password:
+                    raise django.forms.ValidationError(
+                        u"Passwords do not match")
+                cleaned_data['password'] = instance.password
+                return cleaned_data
+        if password != repeat_password:
+            raise django.forms.ValidationError(u"Passwords do not match")
+        return cleaned_data
 
-    def save(self, force_insert=False, force_update=False, commit=True, *args, **kwargs):
+    def save(self,
+            force_insert=False, force_update=False, commit=True,
+            *args, **kwargs):
         """
         A custom save method which injects the username and password
         attributes into the model object since they are not model Fields, only
