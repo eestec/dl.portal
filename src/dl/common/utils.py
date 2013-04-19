@@ -56,3 +56,12 @@ def paginate_video_set(query_set, page_number=1):
     except EmptyPage:
         page = None
     return page
+
+def add_static_domain_to_context(request):
+    """
+    Context processor which adds the domains name where static files are
+    hosted which is set in the settings file.
+    """
+    return {
+        'static_files_domain': getattr(settings, 'STATIC_FILES_DOMAIN', None),
+    }

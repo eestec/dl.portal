@@ -13,7 +13,7 @@
         <link rel="stylesheet" type="text/css" href="{% static "dl/css/ui-lightness/jquery-ui-1.9.1.custom.min.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static "dl/css/base.css" %}">
         <link rel="stylesheet" type="text/css" href="{% static 'dl/css/zocial.css' %}">
-        <meta property="og:image" content="{% static 'dl/images/og-logo.png' %}">
+        <meta property="og:image" content="{{ static_files_domain }}{% static 'dl/images/og-logo.png' %}">
         {% block extra-css %}{% endblock %}
         {% block extra-head %}{% endblock %}
         <title>{% block tab-title %}EESTEC Distance Learning Portal{% endblock %}</title>

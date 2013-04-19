@@ -49,6 +49,10 @@ MEDIA_URL = '/media/'
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+# Set the value to be the domain name of the server which serves the static
+# content.
+# STATIC_FILES_DOMAIN = ''
+
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -78,6 +82,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # ---------
     # Add the URL of the current page to the context
     'distance_learning.utils.add_url_to_context',
+    # Add the static files domain to the context
+    'common.utils.add_static_domain_to_context',
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
