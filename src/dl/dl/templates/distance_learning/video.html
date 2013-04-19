@@ -19,7 +19,7 @@
 {% comment %} Some Facebook OG meta tags {% endcomment %}
 <meta property="og:url" content="{{ full_path }}">
 <meta property="og:site_name" content="EESTEC Distance Learning Portal">
-<meta property="og:title" content="EESTEC DL Video {{ video.pk }}">
+<meta property="og:title" content="{{ video.name }} | EESTEC Distance Learning">
 {% endblock %}
 
 {% block tab-title %}Video {{ video.pk }} | {{ block.super }}{% endblock %}
