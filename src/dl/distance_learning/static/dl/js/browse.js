@@ -118,16 +118,6 @@ $(function() {
         $('#scroller-inner a').click(clickHandler);
     }
 
-    function centerElements() {
-        // Main navigation
-        var elementWidth = 0;
-        $('.sec-nav-items').children().each(function(i, element) {
-            var $element = $(element);
-            elementWidth +=
-                $element.width() + parseInt($element.css('margin-right'));
-        });
-        $('.sec-nav-items').width(elementWidth);
-    }
     function adjustScroller() {
         var elementWidth = 0;
         $('#nav-dropdown').show();
@@ -160,7 +150,6 @@ $(function() {
 
     // Do work
     adjustScroller();
-    setTimeout(centerElements, 25);
 });
 
 /**

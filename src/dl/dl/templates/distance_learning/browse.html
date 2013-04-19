@@ -16,7 +16,7 @@
 {% block main_content %}
 {% spaceless %}
     <div class="sec-nav">
-        <div class="sec-nav-items">
+        <div class="sec-nav-items browse-items">
             <div id="most-viewed" class="sec-nav-item {{ most_viewed|yesno:"selected,no" }}"><a href="{% url 'dl-video-most-viewed' %}">MOST VIEWED</a></div>
             <div id="recent" class="sec-nav-item {{ recent|yesno:"selected,no" }}"><a href="{% url 'dl-video-recent' %}">RECENT</a></div>
             <div id="by-lc" class="sec-nav-item {{ lc|yesno:"selected,no" }}"><a href="{% url 'dl-video-category-search' category_name='lc' %}">BY LC</a></div>
