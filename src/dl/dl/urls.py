@@ -164,8 +164,7 @@ urlpatterns += patterns('',
             template_name='distance_learning/success-report.html'),
         name='dl-report-success'),
     url(r'^about/report/$',
-        BugReportCreate.as_view(
-            success_url='/success/report/'),
+        BugReportCreate.as_view(),
         name='dl-about-report'),
 )
 
