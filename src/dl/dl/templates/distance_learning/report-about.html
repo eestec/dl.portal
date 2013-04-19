@@ -4,7 +4,7 @@
 
 {% block about-text %}
 We are always seeking feedback to improve our services. If you are facing any general technical issues with our platform or you have experienced a bug, please fill the following form.<br>
-<form id="form-bugreport-upload" action="" method="POST">{% csrf_token %}
+<form id="form-bugreport-upload" action="" method="POST" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>{% csrf_token %}
     {{ form.non_field_errors }}
     {% for field in form %}
     <div class="field">

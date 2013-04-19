@@ -13,6 +13,11 @@ class BugReport(models.Model):
     error_summary = models.CharField(max_length=150)
     description = models.TextField(
         help_text=u'Give as many details as possible about the error')
+    screenshot = models.ImageField(
+            upload_to=lambda instance, filename: '/'.join(('bugs',
+                                                           'screenshots',
+                                                           filename)),
+            blank=True)
 
     def __unicode__(self):
         return self.error_summary
