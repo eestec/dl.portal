@@ -1,10 +1,11 @@
 # Django settings for dl project.
 import os.path
+DEBUG = True
+
 from local_settings import *
 
 BASE_PATH = os.path.dirname(__file__)
 
-DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
