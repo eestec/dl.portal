@@ -36,6 +36,7 @@
             <span> ({{ video.video_age|timedelta_format }} ago)
         </div>
     </div>
+    <div class="clear"></div>
     <div id="video-embed-wrapper">
         {% if video.embed_url %}
         <iframe width="600" height="450" src="{{ video.embed_url }}?wmode=transparent" frameborder="0" allowfullscreen></iframe>
