@@ -77,7 +77,8 @@ def _generic_register_member(request, form_class, registration_view_name):
                     # Immediate activation, no email confirmation
                     new_member.active = True
                     new_member.save()
-            return HttpResponseRedirect('/')
+            #return HttpResponseRedirect('/')
+            return redirect('register-success')
     else:
         form = form_class()
     return render_to_response(

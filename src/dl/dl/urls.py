@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView
+
 from hitcount.views import update_hit_count_ajax
 
 # Uncomment the next two lines to enable the admin:
@@ -39,6 +41,10 @@ urlpatterns += patterns('',
     url(r'^accounts/register/company/$',
         'accounts.views.register_company',
         name='register-company'),
+    url(r'^accounts/register/success/$',
+        TemplateView.as_view(
+            template_name='registration/success-register.html'),
+        name='register-success'),
     url(r'^accounts/profile/favorites/$',
         'accounts.views.add_favorite',
         name='profile-add-favorite'),
@@ -70,7 +76,6 @@ urlpatterns += patterns('',
 
 # Distance learning mappings
 # TODO: Move to a distance_learning/urls file
-from django.views.generic import TemplateView
 from contact.views import BugReportCreate
 urlpatterns += patterns('',
     url(r'^$',
