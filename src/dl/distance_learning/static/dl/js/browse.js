@@ -127,11 +127,11 @@ $(function() {
             elementWidth +=
                 $element.width() + parseInt($element.css('margin-right'));
         });
-        $('#scroller-inner').width(elementWidth);
+        $('#scroller-inner').width(elementWidth + 10);
         if (elementWidth > 1000) elementWidth = 1000;
         $('#scroller-wrap').width(elementWidth);
         $('#scroller').width(elementWidth);
-        $('#nav-dropdown').width(elementWidth + 2 * (23 + 10));
+        $('#nav-dropdown').width(elementWidth + 10 + 2 * (23 + 10));
         if ($('.scroller-option').length == 0) {
             $('#nav-dropdown').hide();
         }
